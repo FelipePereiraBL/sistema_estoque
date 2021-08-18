@@ -1,26 +1,30 @@
 package gui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-import application.Main;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 
-public class MainViewController 
+public class MainViewController implements Initializable
 {
 	@FXML
 	private MenuItem menuIteminventory;
 	@FXML
 	private MenuItem menuItemCategoryProducts;
 	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	//Abrir tela de estoque
 	@FXML
-	public void onMenuItemInventory()
+	public void onMenuItemInventory() throws IOException
 	{
 		
 	}
