@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="371.0" prefWidth="577.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+<VBox prefHeight="371.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CategoryProductListController">
    <children>
       <Label prefHeight="44.0" prefWidth="209.0" text="Categorias de Produtos">
          <font>
@@ -18,13 +17,13 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" text="Adicionar Categoria" />
+          <Button fx:id="btNewCategoryProduct" mnemonicParsing="false" onAction="#onBtNewCategoryProduct" text="Adicionar Categoria" />
         </items>
       </ToolBar>
-      <TableView prefHeight="268.0" prefWidth="577.0">
+      <TableView fx:id="tableViewCategoriesProducts" prefHeight="268.0" prefWidth="577.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Id" />
-          <TableColumn prefWidth="75.0" text="Nome" />
+          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="tableColumName" prefWidth="75.0" text="Nome" />
         </columns>
       </TableView>
    </children>
