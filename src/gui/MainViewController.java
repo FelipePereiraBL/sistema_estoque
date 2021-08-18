@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
@@ -15,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.CategoryProductService;
 
 public class MainViewController implements Initializable
 {
@@ -27,14 +29,20 @@ public class MainViewController implements Initializable
 	@FXML
 	public void onMenuItemInventory()
 	{
-		loadView("/gui/InventoryList.fxml");
+		loadView("/gui/InventoryList.fxml",x->{});
 	}
 	
 	//Abrir tela de categoria de produtos
 	@FXML
 	public void onMenuItemCategoryProducts()
 	{
-		loadView("/gui/CategoryProductList.fxml");
+		loadView("/gui/CategoryProductList.fxml",(CategoryProductListController controller)->
+		{
+			//Injeta a dependencia com serviço de Categoria de produtos
+			controller.setService(new CategoryProductService());
+			//Atualiza a tabela
+			controller.updateTableView();
+		});
 	}
 	
 	@Override
@@ -44,7 +52,7 @@ public class MainViewController implements Initializable
 		
 	}
 	
-	private synchronized void loadView(String absoluteName)
+	private synchronized  <T> void loadView(String absoluteName,Consumer<T> initializingAction)
 	{
 		try
 		{
@@ -60,6 +68,9 @@ public class MainViewController implements Initializable
 		   mainVbox.getChildren().clear();
 		   mainVbox.getChildren().add(mainMenu);
 		   mainVbox.getChildren().addAll(newVbox.getChildren());
+		   
+		   T controller=loader.getController();
+		   initializingAction.accept(controller);
 		   
 		}
 		catch (IOException e)
