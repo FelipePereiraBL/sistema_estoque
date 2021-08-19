@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,20 +28,12 @@ public class CategoryProductListController implements Initializable
 	@FXML
 	private TableColumn<CategoryProduct, String > tableColumName;
 	
-	@FXML
-	private Button btNewCategoryProduct;
-	
 	private ObservableList<CategoryProduct> obsList;
 
 	//Injeção de dependencia com serviços de Categoria de Produtos
 	public void setService(CategoryProductService services) 
 	{
 		this.services = services;
-	}
-	
-	public void onBtNewCategoryProduct()
-	{
-
 	}
 
 	@Override

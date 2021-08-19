@@ -23,13 +23,25 @@ public class MainViewController implements Initializable
 	@FXML
 	private MenuItem menuIteminventory;
 	@FXML
+	private MenuItem menuItemNewProduct;
+	
+	@FXML
 	private MenuItem menuItemCategoryProducts;
+	@FXML
+	private MenuItem menuItemNewCategoryProducts;
+
 	
 	//Abrir tela de estoque
 	@FXML
 	public void onMenuItemInventory()
 	{
 		loadView("/gui/InventoryList.fxml",x->{});
+	}
+	//Abre formulario para adicionar produto ao inventario
+	@FXML
+	public void onMenuNewProduct()
+	{
+		
 	}
 	
 	//Abrir tela de categoria de produtos
@@ -43,6 +55,12 @@ public class MainViewController implements Initializable
 			//Atualiza a tabela
 			controller.updateTableView();
 		});
+	}
+	//Abre formulario para adicionar categoria de produto
+	@FXML
+	public void onMenuItemNewCategoryProducts()
+	{
+		
 	}
 	
 	@Override
