@@ -15,13 +15,11 @@
                 <Menu mnemonicParsing="false" text="Estoque">
                   <items>
                     <MenuItem fx:id="menuIteminventory" mnemonicParsing="false" onAction="#onMenuItemInventory" text="Abrir Estoque" />
-                        <MenuItem mnemonicParsing="false" text="Adicionar produto ao estoque" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Categoria de Produtos">
                   <items>
                     <MenuItem fx:id="menuItemCategoryProducts" mnemonicParsing="false" onAction="#onMenuItemCategoryProducts" text="Mostra categorias de produtos" />
-                        <MenuItem mnemonicParsing="false" text="Adicionar categoria de produtos" />
                   </items>
                 </Menu>
               </menus>
