@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChangeListeners;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 import model.entities.CategoryProduct;
 import model.services.CategoryProductService;
 
-public class CategoryProductListController implements Initializable
+public class CategoryProductListController implements Initializable,DataChangeListeners
 {
 	//Dependencia 
 	private CategoryProductService services;
@@ -101,7 +102,9 @@ public class CategoryProductListController implements Initializable
 			//Manda o obj(CategoryProductForm vazio para o formulario)
 			controller.setCategoryProduct(obj);
 			//Injeção de dependencia
-			controller.setService(new CategoryProductService());
+			controller.setService(new CategoryProductService());			
+			//Inscreve essa classe para receber o evento
+			controller.subscribleChangeListener(this);
 			//Carrega os dados do entity  nos testFields do formulario
 			controller.updateFormData();
 			
@@ -118,6 +121,14 @@ public class CategoryProductListController implements Initializable
 		     e.getStackTrace();
 			Alerts.showAlert("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
+		
+	}
+
+	//Executa o evento
+	@Override
+	public void onChanged() 
+	{
+		updateTableView();
 		
 	}
 
