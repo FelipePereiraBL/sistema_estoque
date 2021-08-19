@@ -28,7 +28,7 @@ import model.services.CategoryProductService;
 
 public class CategoryProductListController implements Initializable
 {
-	//Dependencia com serviços de Categorias de produtos
+	//Dependencia 
 	private CategoryProductService services;
 	
 	@FXML
@@ -43,7 +43,7 @@ public class CategoryProductListController implements Initializable
 	
 	private ObservableList<CategoryProduct> obsList;
 
-	//Injeção de dependencia com serviços de Categoria de Produtos
+	//Injeção de dependencia 
 	public void setService(CategoryProductService services) 
 	{
 		this.services = services;
@@ -52,7 +52,9 @@ public class CategoryProductListController implements Initializable
 	public void onBtNewCategoryProduct(ActionEvent event)
 	{
 		Stage parentStage=Utils.currentStage(event);
-		createDialogForm("/gui/CategoryProductForm.fxml",parentStage);
+		//Cria um CategoryProduct vazio para ser passado para o 
+		CategoryProduct obj=new CategoryProduct();
+		createDialogForm(obj,"/gui/CategoryProductForm.fxml",parentStage);
 
 	}
 
@@ -87,12 +89,20 @@ public class CategoryProductListController implements Initializable
 		 tableViewCategoriesProducts.setItems(obsList);
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage)
+	private void createDialogForm(CategoryProduct obj,String absoluteName, Stage parentStage)
 	{
 		try 
 		{
 			FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane=loader.load();
+			
+			//Pega o controller de CategoryProductForm
+			CategoryProductFormController controller=loader.getController();
+			//Manda o obj(CategoryProductForm vazio para o formulario)
+			controller.setCategoryProduct(obj);
+			
+			//Carrega os dados do entity  nos testFields do formulario
+			controller.updateFormData();
 			
 			Stage dialogStage=new Stage();
 			dialogStage.setTitle("Enter department data");
