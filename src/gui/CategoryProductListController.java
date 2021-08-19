@@ -42,7 +42,7 @@ public class CategoryProductListController implements Initializable
 	
 	public void onBtNewCategoryProduct()
 	{
-		System.out.println("action");
+
 	}
 
 	@Override
