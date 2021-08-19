@@ -15,4 +15,16 @@ public class CategoryProductService
 		return dao.findAll();
 	}
 	
+	public void saveOrUpdate(CategoryProduct obj)
+	{
+		if(obj.getId()==null)
+		{
+			dao.insert(obj);
+		}
+		else
+		{
+			dao.update(obj);
+		}
+	}
+	
 }

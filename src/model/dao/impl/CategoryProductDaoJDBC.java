@@ -136,8 +136,8 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 				"UPDATE category " +
-				"SET Name = ? " +
-				"WHERE Id = ?");
+				"SET name = ? " +
+				"WHERE id = ?");
 
 			st.setString(1, obj.getName());
 			st.setInt(2, obj.getId());

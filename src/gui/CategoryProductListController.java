@@ -100,7 +100,8 @@ public class CategoryProductListController implements Initializable
 			CategoryProductFormController controller=loader.getController();
 			//Manda o obj(CategoryProductForm vazio para o formulario)
 			controller.setCategoryProduct(obj);
-			
+			//Injeção de dependencia
+			controller.setService(new CategoryProductService());
 			//Carrega os dados do entity  nos testFields do formulario
 			controller.updateFormData();
 			
