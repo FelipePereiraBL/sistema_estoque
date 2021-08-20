@@ -3,7 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DbException;
 import gui.listeners.DataChangeListeners;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.CategoryProduct;
+import model.exceptions.ValidationException;
 import model.services.CategoryProductService;
 
 public class CategoryProductFormController implements Initializable
@@ -28,7 +31,7 @@ public class CategoryProductFormController implements Initializable
 	//Dependencia
 	private CategoryProductService service;
 	
-	//Lista de objetos que receberão o evento(quando os dados forem atualizados)
+	//Lista de objetos que receberão a notificação(quando os dados forem atualizados)
 	private List<DataChangeListeners>dataChangeListeners=new ArrayList<>();
 	
 	@FXML
@@ -56,7 +59,7 @@ public class CategoryProductFormController implements Initializable
 		this.service = service;
 	}
 	
-	//Adiciona objetos na lista para receber o evento 
+	//Adiciona objetos na lista para receber a notificação 
 	public void subscribleChangeListener(DataChangeListeners listener)
 	{
 		dataChangeListeners.add(listener);
@@ -82,13 +85,17 @@ public class CategoryProductFormController implements Initializable
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
 		}
+		catch(ValidationException e)
+		{
+			setErrorMessages(e.getErrors());
+		}
 		catch (DbException e) 
 		{
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
 	
-	//Emite o evento para cada objeto da lista
+	//Notifica cada listener para disparar o evento
 	private void notifyChangeListeners() 
 	{
 		for (DataChangeListeners listener : dataChangeListeners)
@@ -103,10 +110,24 @@ public class CategoryProductFormController implements Initializable
 	{
 		CategoryProduct obj=new CategoryProduct();
 		
+		//Exceção persolazidada
+		ValidationException exception=new ValidationException("Validate Exception");
+		
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
 
+		//Verifica se o campo nome esta vazio
+		if(txtName.getText()==null||txtName.getText().trim().equals(""))
+		{
+			exception.addErrors("name", "Esse campo não pode ficar vazio");
+		}
 		
 		obj.setName(txtName.getText());
+		
+		//Se ouver mais de um erro na lista de essro a excessao sera lançada
+		if(exception.getErrors().size()>0)
+		{
+			throw exception;
+		}
 	
 		
 		return obj;
@@ -139,8 +160,21 @@ public class CategoryProductFormController implements Initializable
 		{
 			throw new IllegalStateException("Entity was null");
 		}
+		
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
+	}
+	
+	//Escreve a mensagem de erro na label de ErrorName
+	private void setErrorMessages(Map<String,String>errors)
+	{
+		Set<String>fields=errors.keySet();
+		
+		if(fields.contains("name"))
+		{
+			labelErrorName.setText(errors.get("name"));
+		}
+		
 	}
 	
 

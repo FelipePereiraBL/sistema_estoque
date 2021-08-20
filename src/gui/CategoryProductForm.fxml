@@ -30,7 +30,7 @@
             <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="labelErrorName" textFill="#e40a0a" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Italic" size="18.0" />
+                  <Font name="System Italic" size="10.0" />
                </font>
             </Label>
             <HBox prefHeight="56.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
