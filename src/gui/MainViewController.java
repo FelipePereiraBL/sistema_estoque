@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import model.services.CategoryProductService;
+import model.services.ProductService;
 
 public class MainViewController implements Initializable
 {
@@ -29,7 +30,13 @@ public class MainViewController implements Initializable
 	@FXML
 	public void onMenuItemInventory()
 	{
-		loadView("/gui/InventoryList.fxml",x->{});
+		loadView("/gui/InventoryList.fxml",(InventoryListController controller)->
+		{
+			//Injeta a dependencia com serviço de Categoria de produtos
+			controller.setServices(new ProductService());
+			//Atualiza a tabela
+			controller.updateTableView();
+		});
 	}
 	
 	//Abrir tela de categoria de produtos
@@ -75,6 +82,7 @@ public class MainViewController implements Initializable
 		}
 		catch (IOException e)
 		{
+			e.printStackTrace();
 			Alerts.showAlert("IOExeption", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}

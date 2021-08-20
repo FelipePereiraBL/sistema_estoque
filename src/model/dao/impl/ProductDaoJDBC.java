@@ -167,6 +167,7 @@ private Connection conn;
 		obj.setColor(rs.getString("cor"));
 		obj.setFactoryPrice(rs.getDouble("precoFabrica")); 
 		obj.setSalePrice(rs.getDouble("precoVenda")); 
+		obj.setCategory(cat);
 		
 		return obj;
 	}
@@ -187,10 +188,10 @@ private Connection conn;
 		try 
 		{
 			st = conn.prepareStatement(
-					"SELECT inventory.*,category.nome as CatName "
+					"SELECT inventory.*,category.name as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
-					+ "ORDER BY nome");
+					+ "ORDER BY name");
 			
 			rs = st.executeQuery();
 			
