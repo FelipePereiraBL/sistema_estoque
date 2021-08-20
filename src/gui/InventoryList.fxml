@@ -17,7 +17,7 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" text="Adiciona produto" />
+          <Button fx:id="btNewProduct" mnemonicParsing="false" onAction="#onBtNewProduct" text="Adiciona produto" />
         </items>
       </ToolBar>
       <TableView fx:id="tableViewProducts" prefHeight="277.0" prefWidth="606.0">
@@ -29,6 +29,7 @@
             <TableColumn fx:id="tableColumNCode" prefWidth="75.0" text="Codigo" />
             <TableColumn fx:id="tableColumFactoryPrice" prefWidth="100.0" text="Preço de fabrica" />
             <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Preço de venda" />
+            <TableColumn prefWidth="75.0" text="Column X" />
             <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" text="Column X" />
             <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" text="Column X" />
         </columns>

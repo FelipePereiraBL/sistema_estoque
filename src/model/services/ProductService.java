@@ -2,8 +2,8 @@ package model.services;
 
 import java.util.List;
 
-import model.dao.ProductDao;
 import model.dao.DaoFactory;
+import model.dao.ProductDao;
 import model.entities.Product;
 
 public class ProductService 

@@ -132,7 +132,7 @@ private Connection conn;
 		try 
 		{
 			st = conn.prepareStatement(
-					"SELECT inventory.*,category.nome as DepName "
+					"SELECT inventory.*,category.name as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
 					+ "WHERE inventory.id = ?");
@@ -191,7 +191,7 @@ private Connection conn;
 					"SELECT inventory.*,category.name as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
-					+ "ORDER BY name");
+					+ "ORDER BY nome");
 			
 			rs = st.executeQuery();
 			
@@ -236,7 +236,7 @@ private Connection conn;
 					"SELECT inventory.*,category.nome as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
-					+ "WHERE CategoryProductId = ? "
+					+ "WHERE CategoryProductId =?"
 					+ "ORDER BY nome");
 			
 			st.setInt(1, category.getId());

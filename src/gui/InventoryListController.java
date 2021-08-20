@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,6 +26,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Product;
 import model.services.ProductService;
@@ -117,35 +122,35 @@ public class InventoryListController implements Initializable,DataChangeListener
 	
 	private void createDialogForm(Product obj,String absoluteName, Stage parentStage)
     {
-//		try 
-//		{
-////			FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
-//			Pane pane=loader.load();
-//			
-//			//Pega o controller de InventoryForm
-//			InventoryFormController controller=loader.getController();
-//			//Manda o obj(ProductForm vazio para o formulario)
-//			controller.setProduct(obj);
-//			//Injeção de dependencia
-//			controller.setService(new InventoryService(),new InventoryListController());			
-//			//Inscreve essa classe para receber o evento
-//			controller.subscribleChangeListener(this);
-//			//Carrega os dados do entity  nos testFields do formulario
-//			controller.updateFormData();
-////			
-//			Stage dialogStage=new Stage();
-//			dialogStage.setTitle("Insira nova categoria de produto");
-//			dialogStage.setScene(new Scene(pane));
-//			dialogStage.setResizable(false);
-//			dialogStage.initOwner(parentStage);
-//			dialogStage.initModality(Modality.WINDOW_MODAL);
-//			dialogStage.showAndWait();
-//		} 
-//		catch (IOException e) 
-//		{
-////		     e.getStackTrace();
-////			Alerts.showAlert("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
-//		}
+		try 
+		{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane=loader.load();
+			
+			//Pega o controller de InventoryForm
+			InventoryFormController controller=loader.getController();
+			//Manda o obj(ProductForm vazio para o formulario)
+			controller.setProduct(obj);
+			//Injeção de dependencia
+			controller.setService(new ProductService());			
+			//Inscreve essa classe para receber o evento
+			controller.subscribleChangeListener(this);
+			//Carrega os dados do entity  nos testFields do formulario
+			controller.updateFormData();
+			
+			Stage dialogStage=new Stage();
+			dialogStage.setTitle("Insira nova categoria de produto");
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+		} 
+		catch (IOException e) 
+		{
+	     e.getStackTrace();
+		 Alerts.showAlert("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
+		}
 		
     }
 
