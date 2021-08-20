@@ -3,9 +3,11 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import db.DbIntegrityException;
 import gui.listeners.DataChangeListeners;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -19,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,8 +43,12 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 	private TableColumn<CategoryProduct, Integer > tableColumId;
 	@FXML
 	private TableColumn<CategoryProduct, String > tableColumName;
+	
 	@FXML
 	private TableColumn<CategoryProduct, CategoryProduct > tableColumnEDIT;
+	@FXML
+	private TableColumn<CategoryProduct, CategoryProduct > tableColumnREMOVE;
+	
 	
 	@FXML
 	private Button btNewCategoryProduct;
@@ -94,6 +101,7 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		 tableViewCategoriesProducts.setItems(obsList);
 		 
 		 initEditButtons();
+		 initRemoveButtons();
 	}
 	
 	private void createDialogForm(CategoryProduct obj,String absoluteName, Stage parentStage)
@@ -165,5 +173,52 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		  }); 
 		} 
 
+	//Isere um botão para remover os botões associados a categoria de produtos removida
+	private void initRemoveButtons() 
+	{ 
+		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
+		tableColumnREMOVE.setCellFactory(param -> new TableCell<CategoryProduct, CategoryProduct>() 
+		{ 
+		 private final Button button = new Button("Remove"); 
+		 @Override
+		 protected void updateItem(CategoryProduct obj, boolean empty) 
+		 { 
+		 super.updateItem(obj, empty); 
+		 if (obj == null) 
+		 { 
+		 setGraphic(null); 
+		 return; 
+		 } 
+		 setGraphic(button); 
+		 button.setOnAction(event -> removeEntity(obj)); 
+		 } 
+		 }); 
+		}
 
+	//Remove a categoria de produtos
+	private void removeEntity(CategoryProduct obj) 
+	{
+		Optional<ButtonType>result= Alerts.showConfirmation("Confirmação", "Tem certeza que deseja remover essa categoria de produtos");
+		
+		if(result.get()==ButtonType.OK)
+		{
+			if(services==null)
+			{
+				throw new IllegalStateException("Service was null");
+			}
+			
+			try
+			{
+				services.remove(obj);
+				updateTableView();
+				
+			} 
+			catch (DbIntegrityException e)
+			{
+				Alerts.showAlert("Erro ao remover categoria de produtos", null, e.getMessage(), AlertType.ERROR);
+			}
+			
+		}
+
+	}
 }

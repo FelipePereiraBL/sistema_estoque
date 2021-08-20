@@ -27,4 +27,9 @@ public class CategoryProductService
 		}
 	}
 	
+	public void remove(CategoryProduct obj)
+	{
+		dao.deleteById(obj.getId());
+	}
+	
 }
