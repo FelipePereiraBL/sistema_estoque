@@ -30,6 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Product;
+import model.services.CategoryProductService;
 import model.services.ProductService;
 
 public class InventoryListController implements Initializable,DataChangeListeners
@@ -132,7 +133,8 @@ public class InventoryListController implements Initializable,DataChangeListener
 			//Manda o obj(ProductForm vazio para o formulario)
 			controller.setProduct(obj);
 			//Injeção de dependencia
-			controller.setService(new ProductService());			
+			controller.setService(new ProductService(),new CategoryProductService());	
+			controller.loadAssociateObjects();
 			//Inscreve essa classe para receber o evento
 			controller.subscribleChangeListener(this);
 			//Carrega os dados do entity  nos testFields do formulario

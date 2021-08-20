@@ -12,6 +12,8 @@ import gui.listeners.DataChangeListeners;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,10 +21,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import model.entities.CategoryProduct;
 import model.entities.Product;
 import model.exceptions.ValidationException;
+import model.services.CategoryProductService;
 import model.services.ProductService;
 
 public class InventoryFormController implements Initializable
@@ -32,6 +38,9 @@ public class InventoryFormController implements Initializable
 	
 	//Dependencia
 	private ProductService service;
+	
+	//Dependencia
+	private CategoryProductService categoryService;
 	
 	//Lista de objetos que receberão a notificação(quando os dados forem atualizados)
 	private List<DataChangeListeners>dataChangeListeners=new ArrayList<>();
@@ -53,6 +62,8 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private ComboBox<CategoryProduct> comboBoxCategory;
 	
+	private ObservableList<CategoryProduct> obsList;
+	
 	@FXML
 	private Label labelErrorName;
 	
@@ -68,9 +79,10 @@ public class InventoryFormController implements Initializable
 	}
 
 	//Injeção da dependencia
-	public void setService(ProductService service) 
+	public void setService(ProductService service,CategoryProductService categoryService) 
 	{
 		this.service = service;
+		this.categoryService=categoryService;
 	}
 	
 	//Adiciona objetos na lista para receber a notificação 
@@ -187,6 +199,8 @@ public class InventoryFormController implements Initializable
 	{
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtName, 30);
+		
+		initializeComboBoxCategory();
 	}
 	
 	//Carrega os dados do entity  nos testFields do formulario
@@ -199,6 +213,28 @@ public class InventoryFormController implements Initializable
 		
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
+		
+		if(entity.getCategory()==null)
+		{
+			comboBoxCategory.getSelectionModel().selectFirst();
+		}
+		else
+		{
+			comboBoxCategory.setValue(entity.getCategory());
+		}
+	}
+	
+	public void loadAssociateObjects()
+	{
+		if(categoryService==null)
+		{
+			throw new IllegalStateException("DepartmentService was null");
+		}
+		List<CategoryProduct> list=categoryService.findAll();
+		
+		obsList=FXCollections.observableArrayList(list);
+		
+		comboBoxCategory.setItems(obsList);
 	}
 	
 	//Escreve a mensagem de erro na label de ErrorName
@@ -213,5 +249,19 @@ public class InventoryFormController implements Initializable
 		
 	}
 	
+	private void initializeComboBoxCategory() 
+	{
+		Callback<ListView<CategoryProduct>, ListCell<CategoryProduct>> factory = lv -> new ListCell<CategoryProduct>() 
+		{
+			@Override
+			protected void updateItem(CategoryProduct item, boolean empty) 
+			{
+				super.updateItem(item, empty);
+				setText(empty ? "" : item.getName());
+			}
+		};
+		comboBoxCategory.setCellFactory(factory);
+		comboBoxCategory.setButtonCell(factory.call(null));
+	}
 
 }
