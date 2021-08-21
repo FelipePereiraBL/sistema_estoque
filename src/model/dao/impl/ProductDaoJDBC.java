@@ -33,17 +33,19 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO inventory "
-					+ "(nome, marca, cor, codigo, precoFabrica, precoVenda) "
+					+ "(nome, marca, quantidade, cor, codigo, precoFabrica, precoVenda, CategoryProductId) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getBrand());
-			st.setString(3, obj.getColor());
-			st.setInt(4, obj.getCode());
-			st.setDouble(5, obj.getFactoryPrice());
-			st.setDouble(6, obj.getSalePrice());
+			st.setInt(3, obj.getQuantity());
+			st.setString(4, obj.getColor());
+			st.setString(5, obj.getCode());
+			st.setDouble(6, obj.getFactoryPrice());
+			st.setDouble(7, obj.getSalePrice());
+			st.setInt(8, obj.getCategory().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -80,15 +82,19 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"UPDATE inventory "
-					+ "SET nome = ?, marca = ?, cor = ?, codigo = ?, precoFabrica = ?, precoVenda = ? "
-					+ "WHERE id = ?");
+					+ "SET nome = ?, marca = ?, quantidade = ?, cor = ?, codigo = ?, precoFabrica = ?, precoVenda = ?, CategoryProductId = ? "
+					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getBrand());
-			st.setString(3, obj.getColor());
-			st.setInt(4, obj.getCode());
-			st.setDouble(5, obj.getFactoryPrice());
-			st.setDouble(6, obj.getSalePrice());
+			st.setInt(3, obj.getQuantity());
+			st.setString(4, obj.getColor());
+			st.setString(5, obj.getCode());
+			st.setDouble(6, obj.getFactoryPrice());
+			st.setDouble(7, obj.getSalePrice());
+			st.setInt(8, obj.getCategory().getId());
+			st.setInt(9, obj.getId());
+
 			
 			st.executeUpdate();
 		}
@@ -164,7 +170,9 @@ private Connection conn;
 		obj.setId(rs.getInt("id"));
 		obj.setName(rs.getString("nome"));
 		obj.setBrand(rs.getString("marca"));
+		obj.setQuantity(rs.getInt("quantidade"));
 		obj.setColor(rs.getString("cor"));
+		obj.setCode(rs.getString("codigo"));
 		obj.setFactoryPrice(rs.getDouble("precoFabrica")); 
 		obj.setSalePrice(rs.getDouble("precoVenda")); 
 		obj.setCategory(cat);
@@ -191,7 +199,7 @@ private Connection conn;
 					"SELECT inventory.*,category.name as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
-					+ "ORDER BY nome");
+					+ "ORDER BY name");
 			
 			rs = st.executeQuery();
 			
@@ -233,7 +241,7 @@ private Connection conn;
 		try
 		{
 			st = conn.prepareStatement(
-					"SELECT inventory.*,category.nome as CatName "
+					"SELECT inventory.*,category.name as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
 					+ "WHERE CategoryProductId =?"

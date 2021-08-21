@@ -52,6 +52,8 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private TextField txtMarca;
 	@FXML
+	private TextField txtQuantidade;
+	@FXML
 	private TextField txtCor;
 	@FXML
 	private TextField txtCodigo;
@@ -66,6 +68,16 @@ public class InventoryFormController implements Initializable
 	
 	@FXML
 	private Label labelErrorName;
+	@FXML
+	private Label labelErrorMarca;
+	@FXML
+	private Label labelErrorQuantidade;
+	@FXML
+	private Label labelErrorCor;
+	@FXML
+	private Label labelErrorCode;
+	@FXML
+	private Label labelErrorPrecoFabrica;
 	
 	@FXML
 	private Button btSave;
@@ -132,43 +144,49 @@ public class InventoryFormController implements Initializable
 	}
 	
 	//Pega os dados do formulario
-	private Product getFormData() 
+ 	private Product getFormData() 
 	{
 		Product obj=new Product();
 		
+		obj.setId(Utils.tryParseToInt(txtId.getText()));
+		
 		//Exceção persolazidada
 		ValidationException exception=new ValidationException("Validate Exception");
-		
-		obj.setId(Utils.tryParseToInt(txtId.getText()));
 
 		//Verifica se o campo nome esta vazio
 		if(txtName.getText()==null||txtName.getText().trim().equals(""))
 		{
 			exception.addErrors("name", "Esse campo não pode ficar vazio");
-		}
-		
+		}		
 		obj.setName(txtName.getText());
 		
-		//Se ouver mais de um erro na lista de essro a excessao sera lançada
-		if(exception.getErrors().size()>0)
-		{
-			throw exception;
-		}
-		
+		//Verifica se o campo marca esta vazio
 		if(txtMarca.getText()==null||txtMarca.getText().trim().equals(""))
 		{
 			exception.addErrors("brand", "Esse campo não pode ficar vazio");
 		}
 		obj.setBrand(txtMarca.getText());
 		
+		if(txtQuantidade.getText()==null||txtQuantidade.getText().trim().equals(""))
+		{
+			exception.addErrors("quantity", "Esse campo não pode ficar vazio");
+		}
+		obj.setQuantity(Utils.tryParseToInt(txtQuantidade.getText()));
+		
+		//Verifica se o campo cor esta vazio
 		if(txtCor.getText()==null||txtCor.getText().trim().equals(""))
 		{
 			exception.addErrors("color", "Esse campo não pode ficar vazio");
 		}
 		obj.setColor(txtCor.getText());
 		
-		obj.setCode(Utils.tryParseToInt(txtCodigo.getText()));
+		if(txtCodigo.getText()==null||txtCodigo.getText().trim().equals(""))
+		{
+			exception.addErrors("code", "Esse campo não pode ficar vazio");
+		}
+		obj.setCode(txtCodigo.getText());
 		
+		//Verifica se o campo pre;o de fabrica esta vazio
 		if(txtPrecoFabrica.getText()==null||txtPrecoFabrica.getText().trim().equals(""))
 		{
 			exception.addErrors("factoryPrice", "Esse campo não pode ficar vazio");
@@ -176,16 +194,23 @@ public class InventoryFormController implements Initializable
 		obj.setFactoryPrice(Utils.tryParseToDouble( txtPrecoFabrica.getText()));
 		
 		obj.setSalePrice(Utils.tryParseToDouble( txtPrecoVenda.getText()));
+		
 		obj.setCategory(comboBoxCategory.getValue());
 		
+		// Se ouver mais de um erro na lista de essro a excessao sera lançada
+		if (exception.getErrors().size() > 0) 
+		{
+			throw exception;
+		}
+		
 		return obj;
-	}
-	
+	}	
 	
 	@FXML
 	public  void onBtCancelAction(ActionEvent event)
 	{
 		Utils.currentStage(event).close();
+		
 	}
 	
 	@Override
@@ -199,6 +224,10 @@ public class InventoryFormController implements Initializable
 	{
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtName, 30);
+		Constraints.setTextFieldInteger(txtQuantidade);
+		Constraints.setTextFieldMaxLength(txtCodigo, 20);
+		//Constraints.setTextFieldDouble(txtPrecoFabrica);
+		//Constraints.setTextFieldDouble(txtPrecoVenda);
 		
 		initializeComboBoxCategory();
 	}
@@ -213,6 +242,12 @@ public class InventoryFormController implements Initializable
 		
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
+		txtMarca.setText(entity.getBrand());
+		txtQuantidade.setText(String.valueOf(entity.getQuantity()));
+		txtCor.setText(entity.getColor());
+		txtCodigo.setText((entity.getCode()));
+		txtPrecoFabrica.setText(String.valueOf(entity.getFactoryPrice()));
+		txtPrecoVenda.setText(String.valueOf(entity.getSalePrice()));
 		
 		if(entity.getCategory()==null)
 		{
@@ -242,10 +277,12 @@ public class InventoryFormController implements Initializable
 	{
 		Set<String>fields=errors.keySet();
 		
-		if(fields.contains("name"))
-		{
-			labelErrorName.setText(errors.get("name"));
-		}
+		labelErrorName.setText(fields.contains("name")?errors.get("name"):"");		
+		labelErrorMarca.setText(fields.contains("brand")?errors.get("brand"):"");	
+		labelErrorQuantidade.setText(fields.contains("quantity")?errors.get("quantity"):"");
+		labelErrorCor.setText(fields.contains("color")?errors.get("color"):"");		
+		labelErrorCode.setText(fields.contains("code")?errors.get("code"):"");
+		labelErrorPrecoFabrica.setText(fields.contains("factoryPrice")?errors.get("factoryPrice"):"");
 		
 	}
 	

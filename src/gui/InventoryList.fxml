@@ -22,16 +22,17 @@
       </ToolBar>
       <TableView fx:id="tableViewProducts" prefHeight="277.0" prefWidth="606.0">
         <columns>
-          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id" />
-          <TableColumn fx:id="tableColumName" prefWidth="75.0" text="Nome" />
-            <TableColumn fx:id="tableColumBrand" prefWidth="75.0" text="Marca" />
-            <TableColumn fx:id="tableColumColor" prefWidth="75.0" text="Cor" />
+          <TableColumn fx:id="tableColumId" prefWidth="30.0" text="Id" />
+          <TableColumn fx:id="tableColumName" prefWidth="100.0" text="Nome" />
+            <TableColumn fx:id="tableColumCatewgory" prefWidth="140.0" text="Categoria" />
+            <TableColumn fx:id="tableColumQiantity" prefWidth="75.0" text="Quantidade" />
+            <TableColumn fx:id="tableColumBrand" prefWidth="100.0" text="Marca" />
+            <TableColumn fx:id="tableColumColor" prefWidth="100.0" text="Cor" />
             <TableColumn fx:id="tableColumNCode" prefWidth="75.0" text="Codigo" />
             <TableColumn fx:id="tableColumFactoryPrice" prefWidth="100.0" text="Preço de fabrica" />
             <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Preço de venda" />
-            <TableColumn prefWidth="75.0" text="Column X" />
-            <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" text="Column X" />
-            <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" text="Column X" />
+            <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" />
+            <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
         </columns>
       </TableView>
    </children>

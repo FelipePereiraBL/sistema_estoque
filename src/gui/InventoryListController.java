@@ -45,11 +45,15 @@ public class InventoryListController implements Initializable,DataChangeListener
 	@FXML
 	private TableColumn<Product, String > tableColumName;
 	@FXML
+	private TableColumn<Product, Integer > tableColumCatewgory;
+	@FXML
+	private TableColumn<Product, Integer > tableColumQiantity;
+	@FXML
 	private TableColumn<Product, String > tableColumBrand;
 	@FXML
-	private TableColumn<Product, Integer > tableColumNCode;
-	@FXML
 	private TableColumn<Product, String > tableColumColor;
+	@FXML
+	private TableColumn<Product, String > tableColumNCode;
 	@FXML
 	private TableColumn<Product, Double > tableColumFactoryPrice;
 	@FXML
@@ -98,11 +102,13 @@ public class InventoryListController implements Initializable,DataChangeListener
 	{
 		tableColumId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tableColumId.setCellValueFactory(new PropertyValueFactory<>("brand"));
-		tableColumId.setCellValueFactory(new PropertyValueFactory<>("color"));
-		tableColumId.setCellValueFactory(new PropertyValueFactory<>("code"));
-		tableColumId.setCellValueFactory(new PropertyValueFactory<>("factoryPrice"));
-		tableColumId.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+		tableColumCatewgory.setCellValueFactory(new PropertyValueFactory<>("category"));
+		tableColumBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+		tableColumQiantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		tableColumColor.setCellValueFactory(new PropertyValueFactory<>("color"));
+		tableColumNCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+		tableColumFactoryPrice.setCellValueFactory(new PropertyValueFactory<>("factoryPrice"));
+		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
 	}
 	
 	public void updateTableView()
@@ -186,7 +192,7 @@ public class InventoryListController implements Initializable,DataChangeListener
 		   setGraphic(button); 
 		 
 		   button.setOnAction( 
-		   event -> createDialogForm( obj, "/gui/ProductForm.fxml",Utils.currentStage(event))); 
+		   event -> createDialogForm( obj, "/gui/InventoryForm.fxml",Utils.currentStage(event))); 
 		  } 
 		  }); 
 		} 
