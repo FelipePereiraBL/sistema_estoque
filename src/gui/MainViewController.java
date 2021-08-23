@@ -25,6 +25,8 @@ public class MainViewController implements Initializable
 	private MenuItem menuIteminventory;
 	@FXML
 	private MenuItem menuItemCategoryProducts;
+	@FXML
+	private MenuItem menuItemSale;
 	
 	//Abrir tela de estoque
 	@FXML
@@ -50,6 +52,12 @@ public class MainViewController implements Initializable
 			//Atualiza a tabela
 			controller.updateTableView();
 		});
+	}
+	
+	@FXML
+	public void onMenuItemSale()
+	{
+		loadView("/gui/SaleList.fxml",x->{});
 	}
 	
 	@Override

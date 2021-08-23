@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="371.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleListController">
+   <children>
+      <Label prefHeight="44.0" prefWidth="189.0" text="Estoque de Produtos">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tableViewSale" prefHeight="277.0" prefWidth="778.0">
+        <columns>
+          <TableColumn fx:id="tableColumId" prefWidth="30.0" text="Id" />
+            <TableColumn fx:id="tableColumSaleDate" prefWidth="93.0" text="Data" />
+          <TableColumn fx:id="tableColumClientName" prefWidth="120.0" text="Nome do cliente" />
+            <TableColumn fx:id="tableColumDeliveryAddres" prefWidth="156.0" text="Endereço de entrega" />
+            <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Valor da venda" />
+            <TableColumn prefWidth="103.0" text="Lista de produtos" />
+            <TableColumn prefWidth="75.0" />
+            <TableColumn prefWidth="75.0" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

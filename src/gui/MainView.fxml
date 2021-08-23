@@ -22,6 +22,11 @@
                     <MenuItem fx:id="menuItemCategoryProducts" mnemonicParsing="false" onAction="#onMenuItemCategoryProducts" text="Mostra categorias de produtos" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Vendas">
+                    <items>
+                      <MenuItem fx:id="menuItemSale" mnemonicParsing="false" onAction="#onMenuItemSale" text="Registro de vendas" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </children>

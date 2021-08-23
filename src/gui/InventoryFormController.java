@@ -191,7 +191,7 @@ public class InventoryFormController implements Initializable
 		{
 			exception.addErrors("factoryPrice", "Esse campo não pode ficar vazio");
 		}
-		obj.setFactoryPrice(Utils.tryParseToDouble( txtPrecoFabrica.getText()));
+		obj.setFactoryPrice(Utils.tryParseToDouble(txtPrecoFabrica.getText()));
 		
 		obj.setSalePrice(Utils.tryParseToDouble( txtPrecoVenda.getText()));
 		
@@ -226,8 +226,8 @@ public class InventoryFormController implements Initializable
 		Constraints.setTextFieldMaxLength(txtName, 30);
 		Constraints.setTextFieldInteger(txtQuantidade);
 		Constraints.setTextFieldMaxLength(txtCodigo, 20);
-		//Constraints.setTextFieldDouble(txtPrecoFabrica);
-		//Constraints.setTextFieldDouble(txtPrecoVenda);
+		Constraints.setTextFieldDouble(txtPrecoFabrica);
+		Constraints.setTextFieldDouble(txtPrecoVenda);
 		
 		initializeComboBoxCategory();
 	}
