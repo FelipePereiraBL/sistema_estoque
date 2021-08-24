@@ -54,7 +54,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 	@FXML
 	private TableColumn<Sale, Sale> tableColumnREMOVE;
 	@FXML
-	private TableColumn<Sale, Sale> tableColumnLISTSALE;
+	private TableColumn<Sale, String> tableColumnProductSale;
 	
 	@FXML
 	private Button BtNewSale;
@@ -128,6 +128,8 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		tableColumClientName.setCellValueFactory(new PropertyValueFactory<>("clientName"));
 		tableColumDeliveryAddres.setCellValueFactory(new PropertyValueFactory<>("deliveryAddress"));
 		
+		tableColumnProductSale.setCellValueFactory(new PropertyValueFactory<>("productName"));
+		
 		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("total"));
 
 		Stage stage = (Stage) Main.getMainScene().getWindow();
@@ -147,35 +149,8 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		
 		tableViewSale.setItems(obsList);
 		initRemoveButtons();
-		initProductSaleListButtons();
-	}
-	
-	private synchronized  <T> void loadView(String absoluteName, Stage parentStage)
-	{
-		try
-		{
-		   FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
-		   Pane pane=loader.load();
-		   
-		   
-		    Stage dialogStage=new Stage();
-			dialogStage.setTitle("Produtos associados a esse pedido");
-			dialogStage.setScene(new Scene(pane));
-			dialogStage.setResizable(false);
-			dialogStage.initOwner(parentStage);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.showAndWait();
-		   
-		  updateTableView();
-		   
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			Alerts.showAlert("IOExeption", "Error loading view", e.getMessage(), AlertType.ERROR);
-		}
-	}
 
+	}
 
 	private void initRemoveButtons() 
 	{ 
@@ -223,32 +198,6 @@ public class SaleListController  implements Initializable,DataChangeListeners
 			
 		}
 	} 
-	
-	private void initProductSaleListButtons()
-	{ 
-		tableColumnLISTSALE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
-		tableColumnLISTSALE.setCellFactory(param -> new TableCell<Sale, Sale>()
-//		
-		{ 
-		 private final Button button = new Button("Produtos"); 
-		 
-		 @Override
-		 protected void updateItem(Sale obj, boolean empty) 
-		 { 
-		   super.updateItem(obj, empty); 
-		 
-		   if (obj == null) 
-		   { 
-		     setGraphic(null); 
-		     return; 
-		   } 
-		   setGraphic(button); 
-		 
-		   button.setOnAction( 
-		   event -> loadView("/gui/SaleProductsList.fxml",Utils.currentStage(event))); 
-		  } 
-		  }); 
-		}
 
 	@Override
 	public void onChanged() 

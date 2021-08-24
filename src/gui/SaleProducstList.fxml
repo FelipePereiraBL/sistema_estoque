@@ -22,6 +22,7 @@
             <TableColumn fx:id="tableColumBrand" prefWidth="100.0" text="Marca" />
             <TableColumn fx:id="tableColumNCode" prefWidth="75.0" text="Codigo" />
             <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Preço" />
+            <TableColumn fx:id="tableColumnADDPRODUCT" prefWidth="75.0" text="Column X" />
         </columns>
       </TableView>
    </children>

@@ -16,13 +16,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import model.entities.Product;
 import model.entities.Sale;
 import model.services.ProductService;
 import model.services.SaleService;
@@ -47,6 +48,8 @@ public class SaleFormController implements Initializable
 	private TextField txtNameCliente;
 	@FXML
 	private TextField txtEnderecoEntrega;
+	@FXML
+	private TextField txtNomeProduto;
 
 	@FXML
 	private Button btSave;
@@ -89,8 +92,10 @@ public class SaleFormController implements Initializable
 		
 		try 
 		{
+			 CheckNameProduct();
 			entity=getFormData();
 			saleService.saveOrUpdate(entity);
+			
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
 		}
@@ -98,6 +103,21 @@ public class SaleFormController implements Initializable
 		catch (DbException e) 
 		{
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	private void CheckNameProduct()
+	{
+		List<Product>products=service.findAll();
+		
+		for (Product product : products)
+		{
+			if(txtNomeProduto.getText()==product.getName())
+			{
+				product.setQuantity(product.getQuantity()-1);
+				service.saveOrUpdate(product);
+			}
+			
 		}
 	}
 	
@@ -128,6 +148,7 @@ public class SaleFormController implements Initializable
 		obj.setClientName(txtNameCliente.getText());
 		
 		obj.setDeliveryAddress(txtEnderecoEntrega.getText());	
+		obj.setProductName(txtNomeProduto.getText());
 		
 		return obj;
 	}	
@@ -151,34 +172,23 @@ public class SaleFormController implements Initializable
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtEnderecoEntrega, 50);
 		Constraints.setTextFieldMaxLength(txtNameCliente, 30);
+		Constraints.setTextFieldMaxLength(txtNomeProduto, 30);
 		
 	}
 	
 	//Carrega os dados do entity  nos testFields do formulario
 	public void updateFormData()
 	{
-//		if(entity==null)
-//		{
-//			throw new IllegalStateException("Entity was null");
-//		}
-//		
-//		txtId.setText(String.valueOf(entity.getId()));
-//		txt.setText(entity.getName());
-//		txtMarca.setText(entity.getBrand());
-//		txtQuantidade.setText(String.valueOf(entity.getQuantity()));
-//		txtCor.setText(entity.getColor());
-//		txtCodigo.setText((entity.getCode()));
-//		txtPrecoFabrica.setText(String.valueOf(entity.getFactoryPrice()));
-//		txtPrecoVenda.setText(String.valueOf(entity.getSalePrice()));
-//		
-//		if(entity.getCategory()==null)
-//		{
-//			comboBoxCategory.getSelectionModel().selectFirst();
-//		}
-//		else
-//		{
-//			comboBoxCategory.setValue(entity.getCategory());
-//		}
+		if(entity==null)
+		{
+			throw new IllegalStateException("Entity was null");
+		}
+		
+		txtId.setText(String.valueOf(entity.getId()));
+		txtEnderecoEntrega.setText(entity.getDeliveryAddress());
+		txtNameCliente.setText(entity.getClientName());
+		txtNomeProduto.setText(entity.getProductName());
+		
 	}
 	
 	private synchronized  <T> void loadView(String absoluteName, Stage parentStage)

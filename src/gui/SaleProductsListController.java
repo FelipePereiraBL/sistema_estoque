@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -91,7 +94,41 @@ public class SaleProductsListController implements Initializable
 		 obsList=FXCollections.observableArrayList(list);
 		 tableViewProducts.setItems(obsList);
 		 
+		 initAddProductSaleButtons();
+		 
 	}
 	
+	public String AddProductSale(Product obj)
+	{
+		return obj.getName();
+	}
+	
+	
+	private void initAddProductSaleButtons()
+	{ 
+		tableColumnADDPRODUCT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
+		tableColumnADDPRODUCT.setCellFactory(param -> new TableCell<Product, Product>()
+		
+		{ 
+		 private final Button button = new Button("Editar"); 
+		 
+		 @Override
+		 protected void updateItem(Product obj, boolean empty) 
+		 { 
+		   super.updateItem(obj, empty); 
+		 
+		   if (obj == null) 
+		   { 
+		     setGraphic(null); 
+		     return; 
+		   } 
+		   setGraphic(button); 
+		 
+		   button.setOnAction( 
+		   event ->AddProductSale(obj));
+		  } 
+		  }); 
+		} 
+
 	
 }

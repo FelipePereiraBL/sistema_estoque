@@ -1,7 +1,5 @@
 package model.services;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -14,12 +12,7 @@ public class SaleService
 	
 	public List<Sale> findAll()
 	{
-		List<Sale>list=new ArrayList<>();
-		
-		list.add(new Sale(1, new Date(), "Felipe", "Rua tal",124.00));
-		
-		return list;
-		//return dao.findAll();
+		return dao.findAll();
 	}
 	
 	public void saveOrUpdate(Sale obj)

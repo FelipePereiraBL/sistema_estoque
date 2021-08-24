@@ -27,7 +27,7 @@
           <TableColumn fx:id="tableColumClientName" prefWidth="120.0" text="Nome do cliente" />
             <TableColumn fx:id="tableColumDeliveryAddres" prefWidth="156.0" text="Endereço de entrega" />
             <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Valor da venda" />
-            <TableColumn fx:id="tableColumnLISTSALE" prefWidth="114.0" text="Produtos vendidos" />
+            <TableColumn fx:id="tableColumnProductSale" prefWidth="114.0" text="Produto vendido" />
             <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
         </columns>
       </TableView>

@@ -12,8 +12,8 @@ public class Product implements Serializable
 	private Integer quantity;
 	private String color;
 	private String code;
-	private double factoryPrice;
-	private double salePrice;
+	private Double factoryPrice;
+	private Double salePrice;
 	
 	private CategoryProduct category;
 

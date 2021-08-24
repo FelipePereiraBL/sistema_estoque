@@ -1,9 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Sale implements Serializable
 {
@@ -13,22 +11,23 @@ public class Sale implements Serializable
 	private Date saleDate;
 	private String clientName;
 	private String deliveryAddress;
+	private String productName;
 	private Double total;
 	
-	private List<SaleItens> saleItens=new ArrayList<SaleItens>();
 	
 	public  Sale ()
 	{
 		
 	}
 
-	public Sale(Integer id, Date saleDate, String clientName, String deliveryAddress, Double total)
+	public Sale(Integer id, Date saleDate, String clientName, String deliveryAddress,String productName, Double total)
 	{
 		super();
 		this.id = id;
 		this.saleDate = saleDate;
 		this.clientName = clientName;
 		this.deliveryAddress = deliveryAddress;
+		this.productName=productName;
 		this.total=total;
 	}
 
@@ -63,13 +62,15 @@ public class Sale implements Serializable
 	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
 	}
+	
+	
 
-	public List<SaleItens> getSaleItens() {
-		return saleItens;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setSaleItens(List<SaleItens> saleItens) {
-		this.saleItens = saleItens;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public Double getTotal() {
@@ -78,7 +79,7 @@ public class Sale implements Serializable
 
 	public void setTotal(Double total)
 	{
-		this.total = totalPrice();
+		this.total = total;
 	}
 
 	@Override
@@ -104,19 +105,6 @@ public class Sale implements Serializable
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	
-	public Double totalPrice()
-	{
-		Double sum=0.0;
-		
-		for (SaleItens item : saleItens) 
-		{
-			sum=item.subTotal();
-			
-		}
-		return sum;
 	}
 
 }
