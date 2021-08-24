@@ -1,8 +1,6 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SaleItens implements Serializable
 {
@@ -11,17 +9,18 @@ public class SaleItens implements Serializable
 	private Integer quantity;
 	private Double price;
 	
-	private List<Product>list=new ArrayList<Product>();
+	private Product product;
 	
 	public SaleItens()
 	{
 		
 	}
-	public SaleItens(Integer quantity, Double price) 
+	public SaleItens(Integer quantity, Double price,Product product) 
 	{
 		super();
 		this.quantity = quantity;
 		this.price = price;
+		this.product=product;
 	}
 	
 	public Integer getQuantity() 
@@ -42,13 +41,11 @@ public class SaleItens implements Serializable
 		this.price = price;
 	}
 	
-	public List<Product> getList() 
-	{
-		return list;
+	public Product getProduct() {
+		return product;
 	}
-	public void setList(List<Product> list)
-	{
-		this.list = list;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 	@Override
 	public int hashCode() {

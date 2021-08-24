@@ -13,6 +13,7 @@ public class Sale implements Serializable
 	private Date saleDate;
 	private String clientName;
 	private String deliveryAddress;
+	private Double total;
 	
 	private List<SaleItens> saleItens=new ArrayList<SaleItens>();
 	
@@ -21,13 +22,14 @@ public class Sale implements Serializable
 		
 	}
 
-	public Sale(Integer id, Date saleDate, String clientName, String deliveryAddress)
+	public Sale(Integer id, Date saleDate, String clientName, String deliveryAddress, Double total)
 	{
 		super();
 		this.id = id;
 		this.saleDate = saleDate;
 		this.clientName = clientName;
 		this.deliveryAddress = deliveryAddress;
+		this.total=total;
 	}
 
 	public Integer getId() {
@@ -70,6 +72,15 @@ public class Sale implements Serializable
 		this.saleItens = saleItens;
 	}
 
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total)
+	{
+		this.total = totalPrice();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -96,7 +107,7 @@ public class Sale implements Serializable
 	}
 	
 	
-	public Double total()
+	public Double totalPrice()
 	{
 		Double sum=0.0;
 		

@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import model.services.CategoryProductService;
 import model.services.ProductService;
+import model.services.SaleService;
 
 public class MainViewController implements Initializable
 {
@@ -57,7 +58,13 @@ public class MainViewController implements Initializable
 	@FXML
 	public void onMenuItemSale()
 	{
-		loadView("/gui/SaleList.fxml",x->{});
+		loadView("/gui/SaleList.fxml",(SaleListController controller)->
+		{
+			//Injeta a dependencia com serviço de Categoria de produtos
+			controller.setSaleService(new SaleService());
+			//Atualiza a tabela
+			controller.updateTableView();
+		});
 	}
 	
 	@Override

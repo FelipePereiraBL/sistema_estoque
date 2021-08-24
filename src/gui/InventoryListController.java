@@ -69,8 +69,6 @@ public class InventoryListController implements Initializable,DataChangeListener
 	
 	@FXML
 	private Button btNewProduct;
-	@FXML
-	private Button btNewSearch;
 	
 	private ObservableList<Product> obsList;
 	
