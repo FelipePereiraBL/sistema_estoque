@@ -29,7 +29,7 @@ public class SaleService
 	
 	public void remove(Sale obj)
 	{
-		//dao.deleteById(obj.getId());
+		dao.deleteById(obj.getId());
 	}
 	
 }

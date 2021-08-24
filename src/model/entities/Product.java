@@ -12,8 +12,8 @@ public class Product implements Serializable
 	private Integer quantity;
 	private String color;
 	private String code;
-	private Double factoryPrice;
-	private Double salePrice;
+	private double factoryPrice;
+	private double salePrice;
 	
 	private CategoryProduct category;
 
@@ -23,7 +23,7 @@ public class Product implements Serializable
 	}
 
 	public Product(Integer id, String name, String brand,Integer quantity, String color, String code, double factoryPrice,
-			double salePrice, CategoryProduct category) {
+		double salePrice, CategoryProduct category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -132,5 +132,11 @@ public class Product implements Serializable
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return name+"/"+brand+"/"+color+"/R$"+String.format("%.2f", salePrice);
+	}
+
 	
 }

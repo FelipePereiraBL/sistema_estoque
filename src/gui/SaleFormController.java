@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,15 +13,10 @@ import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.entities.Product;
 import model.entities.Sale;
 import model.services.ProductService;
@@ -32,6 +26,8 @@ public class SaleFormController implements Initializable
 {
 	//Dependencia
 	private Sale entity;
+	
+	private Product productSale;
 	
 	//Dependencia
 	private ProductService service;
@@ -56,7 +52,12 @@ public class SaleFormController implements Initializable
 	@FXML
 	private Button btCancel;
 	@FXML
-	private Button btListProductSale;
+	private Button btProductSale;
+	
+	private Double salePrice;
+	
+	@FXML
+	private javafx.scene.control.Label labelProduct;
 	
 	//Injeção da dependencia
 	public void setSale(Sale entity)
@@ -92,9 +93,11 @@ public class SaleFormController implements Initializable
 		
 		try 
 		{
-			 CheckNameProduct();
 			entity=getFormData();
 			saleService.saveOrUpdate(entity);
+			
+			productSale.setQuantity(productSale.getQuantity()-1);
+			service.saveOrUpdate(productSale);
 			
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
@@ -104,26 +107,6 @@ public class SaleFormController implements Initializable
 		{
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
 		}
-	}
-	
-	private void CheckNameProduct()
-	{
-		List<Product>products=service.findAll();
-		
-		for (Product product : products)
-		{
-			if(txtNomeProduto.getText()==product.getName())
-			{
-				product.setQuantity(product.getQuantity()-1);
-				service.saveOrUpdate(product);
-			}
-			
-		}
-	}
-	
-	public void onBtListProductSale(ActionEvent event)
-	{
-		loadView("/gui/SaleProducstList.fxml", Utils.currentStage(event));
 	}
 	
 	//Notifica cada listener para disparar o evento
@@ -146,10 +129,12 @@ public class SaleFormController implements Initializable
 		obj.setSaleDate(new Date());
 		
 		obj.setClientName(txtNameCliente.getText());
+		obj.setProductName(txtNomeProduto.getText());
 		
 		obj.setDeliveryAddress(txtEnderecoEntrega.getText());	
 		obj.setProductName(txtNomeProduto.getText());
-		
+		obj.setTotal(salePrice);
+
 		return obj;
 	}	
 	
@@ -157,6 +142,7 @@ public class SaleFormController implements Initializable
 	public  void onBtCancelAction(ActionEvent event)
 	{
 		Utils.currentStage(event).close();
+		
 		
 	}
 	
@@ -167,13 +153,52 @@ public class SaleFormController implements Initializable
 		
 	}
 	
+	public void CheckProductSale()
+	{
+		List<Product>products=service.findAll();
+		boolean found=false;
+		
+		//Conteudo dos alerts
+		int productQuantity=0;
+		String productName = null;
+		
+		for (Product product : products)
+		{
+			if(txtNomeProduto.getText().toString().equals(product.getName().toString()) && found==false)
+			{
+				salePrice=product.getSalePrice();
+				productName=product.getName();
+				
+				found=true;			
+				
+				productQuantity=product.getQuantity();
+				
+				labelProduct.setText(product.toString());
+				
+				productSale=product;
+			}
+			
+			
+		}
+		
+		if(productQuantity<=3)
+		{
+			Alerts.showAlert("Alerta de estoque", "Esse produto está acabando !", "Após essa venda, terá apenas "+(productQuantity-1)+" "+productName+" no estoque", AlertType.INFORMATION);
+		}
+		
+		if(found==false)
+		{
+			Alerts.showAlert("Produto não encontrado", "Esse produto não está no estoque ou o nome está incorreto !", null, AlertType.INFORMATION);
+			txtNomeProduto.setText("");
+		}
+	}
+	
 	private void initializeNodes()
 	{
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtEnderecoEntrega, 50);
 		Constraints.setTextFieldMaxLength(txtNameCliente, 30);
 		Constraints.setTextFieldMaxLength(txtNomeProduto, 30);
-		
 	}
 	
 	//Carrega os dados do entity  nos testFields do formulario
@@ -187,32 +212,7 @@ public class SaleFormController implements Initializable
 		txtId.setText(String.valueOf(entity.getId()));
 		txtEnderecoEntrega.setText(entity.getDeliveryAddress());
 		txtNameCliente.setText(entity.getClientName());
-		txtNomeProduto.setText(entity.getProductName());
 		
-	}
-	
-	private synchronized  <T> void loadView(String absoluteName, Stage parentStage)
-	{
-		try
-		{
-		   FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
-		   Pane pane=loader.load();
-		   
-		   
-		    Stage dialogStage=new Stage();
-			dialogStage.setTitle("");
-			dialogStage.setScene(new Scene(pane));
-			dialogStage.setResizable(false);
-			dialogStage.initOwner(parentStage);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.showAndWait();
-		   
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			Alerts.showAlert("IOExeption", "Error loading view", e.getMessage(), AlertType.ERROR);
-		}
 	}
 
 

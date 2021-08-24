@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="180.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleFormController">
+<AnchorPane prefHeight="256.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleFormController">
    <children>
-      <HBox fillHeight="false" layoutX="204.0" layoutY="166.0" prefHeight="34.0" prefWidth="120.0" spacing="9.0">
+      <HBox fillHeight="false" layoutX="204.0" layoutY="186.0" prefHeight="45.0" prefWidth="120.0" spacing="9.0">
          <children>
             <Button fx:id="btSave" mnemonicParsing="false" onAction="#onBtSaveAction" text="Save" />
             <Button fx:id="btCancel" mnemonicParsing="false" onAction="#onBtCancelAction" prefWidth="60.0" text="Cancel" />
@@ -43,11 +43,16 @@
             <TextField fx:id="txtNameCliente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txtEnderecoEntrega" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Endereço de entrega" GridPane.rowIndex="2" />
-            <Button fx:id="btListProductSale" mnemonicParsing="false" onAction="#onBtListProductSale" text="Escolher produto" GridPane.rowIndex="3" />
+            <Button fx:id="btProductSale" mnemonicParsing="false" onAction="#CheckProductSale" text="Escolher produto" GridPane.rowIndex="3" />
             <TextField fx:id="txtNomeProduto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <Label layoutX="26.0" layoutY="6.0" prefHeight="17.0" prefWidth="146.0" text="Nova venda">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelProduct" layoutX="20.0" layoutY="182.0" prefHeight="27.0" prefWidth="491.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

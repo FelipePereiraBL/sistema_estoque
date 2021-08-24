@@ -38,7 +38,8 @@ private Connection conn;
 			st.setDate(1,new java.sql.Date( obj.getSaleDate().getTime()));
 			st.setString(2, obj.getClientName());
 			st.setString(3, obj.getDeliveryAddress());
-			st.setDouble(4, obj.getTotal());
+			st.setString(4, obj.getProductName());
+			st.setDouble(5, obj.getTotal());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -67,7 +68,8 @@ private Connection conn;
 		}
 	}
 //
-//	@Override
+
+	//	@Override
 //	public void update(Product obj)
 //	{
 //		PreparedStatement st = null;
@@ -101,27 +103,27 @@ private Connection conn;
 //		}
 //	}
 //
-//	@Override
-//	public void deleteById(Integer id)
-//	{
-//		PreparedStatement st = null;
-//		try
-//		{
-//			st = conn.prepareStatement("DELETE FROM inventory WHERE id = ?");
-//			
-//			st.setInt(1, id);
-//			
-//			st.executeUpdate();
-//		}
-//		catch (SQLException e) 
-//		{
-//			throw new DbException(e.getMessage());
-//		}
-//		finally
-//		{
-//			DB.closeStatement(st);
-//		}
-//	}
+	@Override
+	public void deleteById(Integer id)
+	{
+		PreparedStatement st = null;
+		try
+		{
+			st = conn.prepareStatement("DELETE FROM sale WHERE id = ?");
+			
+			st.setInt(1, id);
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) 
+		{
+			throw new DbException(e.getMessage());
+		}
+		finally
+		{
+			DB.closeStatement(st);
+		}
+	}
 //
 //	@Override
 //	public Product findById(Integer id)

@@ -11,5 +11,6 @@ public interface SaleDao
 	void deleteById(Sale id);
 	List<Sale> findAll();
 	Sale findById(Integer id);
+	void deleteById(Integer id);
 
 }
