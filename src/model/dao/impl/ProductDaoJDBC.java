@@ -33,7 +33,7 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO inventory "
-					+ "(nome, marca, quantidade, cor, codigo, precoFabrica, precoVenda, CategoryProductId) "
+					+ "(nameProduct, brand, quantity, color, code, factoryPrice, salePrice, CategoryProductId) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -82,7 +82,7 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"UPDATE inventory "
-					+ "SET nome = ?, marca = ?, quantidade = ?, cor = ?, codigo = ?, precoFabrica = ?, precoVenda = ?, CategoryProductId = ? "
+					+ "SET nameProduct = ?, brand = ?, quantity = ?, color = ?, code = ?, factoryPrice = ?, salePrice = ?, CategoryProductId = ? "
 					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getName());
@@ -138,7 +138,7 @@ private Connection conn;
 		try 
 		{
 			st = conn.prepareStatement(
-					"SELECT inventory.*,category.name as CatName "
+					"SELECT inventory.*,category.nome as CatName "
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
 					+ "WHERE inventory.id = ?");
@@ -168,13 +168,13 @@ private Connection conn;
 	{
 		Product obj = new Product();
 		obj.setId(rs.getInt("id"));
-		obj.setName(rs.getString("nome"));
-		obj.setBrand(rs.getString("marca"));
-		obj.setQuantity(rs.getInt("quantidade"));
-		obj.setColor(rs.getString("cor"));
-		obj.setCode(rs.getString("codigo"));
-		obj.setFactoryPrice(rs.getDouble("precoFabrica")); 
-		obj.setSalePrice(rs.getDouble("precoVenda")); 
+		obj.setName(rs.getString("nameProduct"));
+		obj.setBrand(rs.getString("brand"));
+		obj.setQuantity(rs.getInt("quantity"));
+		obj.setColor(rs.getString("color"));
+		obj.setCode(rs.getString("code"));
+		obj.setFactoryPrice(rs.getDouble("factoryPrice")); 
+		obj.setSalePrice(rs.getDouble("salePrice")); 
 		obj.setCategory(cat);
 		
 		return obj;
@@ -245,7 +245,7 @@ private Connection conn;
 					+ "FROM inventory INNER JOIN category "
 					+ "ON inventory.CategoryProductId = category.id "
 					+ "WHERE CategoryProductId =?"
-					+ "ORDER BY nome");
+					+ "ORDER BY name");
 			
 			st.setInt(1, category.getId());
 			

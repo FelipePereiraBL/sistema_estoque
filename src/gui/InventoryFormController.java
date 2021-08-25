@@ -33,16 +33,12 @@ import model.services.ProductService;
 
 public class InventoryFormController implements Initializable
 {
-	//Dependencia
 	private Product entity;
 	
-	//Dependencia
 	private ProductService service;
 	
-	//Dependencia
 	private CategoryProductService categoryService;
 	
-	//Lista de objetos que receberão a notificação(quando os dados forem atualizados)
 	private List<DataChangeListeners>dataChangeListeners=new ArrayList<>();
 	
 	@FXML
@@ -50,17 +46,18 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private TextField txtName;
 	@FXML
-	private TextField txtMarca;
+	private TextField txtBrand;
 	@FXML
-	private TextField txtQuantidade;
+	private TextField txtQuantity;
 	@FXML
-	private TextField txtCor;
+	private TextField txtColor;
 	@FXML
-	private TextField txtCodigo;
+	private TextField txtCode;
 	@FXML
-	private TextField txtPrecoFabrica;
+	private TextField txtFactoryPrice;
 	@FXML
-	private TextField txtPrecoVenda;
+	private TextField txtSalePrice;
+
 	@FXML
 	private ComboBox<CategoryProduct> comboBoxCategory;
 	
@@ -69,35 +66,32 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private Label labelErrorName;
 	@FXML
-	private Label labelErrorMarca;
+	private Label labelErrorBrand;
 	@FXML
-	private Label labelErrorQuantidade;
+	private Label labelErrorQuantity;
 	@FXML
-	private Label labelErrorCor;
+	private Label labelErrorColor;
 	@FXML
 	private Label labelErrorCode;
 	@FXML
-	private Label labelErrorPrecoFabrica;
+	private Label labelErrorFactoryPrice;
 	
 	@FXML
 	private Button btSave;
 	@FXML
 	private Button btCancel;
 	
-	//Injeção da dependencia
 	public void setProduct(Product entity)
 	{
 		this.entity = entity;
 	}
 
-	//Injeção da dependencia
 	public void setService(ProductService service,CategoryProductService categoryService) 
 	{
 		this.service = service;
 		this.categoryService=categoryService;
 	}
-	
-	//Adiciona objetos na lista para receber a notificação 
+	 
 	public void subscribleChangeListener(DataChangeListeners listener)
 	{
 		dataChangeListeners.add(listener);
@@ -106,10 +100,9 @@ public class InventoryFormController implements Initializable
 	@FXML
 	public  void onBtSaveAction(ActionEvent event)
 	{
-		//Verifica se as dependencias foram injetadas
 		if(entity==null)
 		{
-			throw new IllegalStateException("Services was null");
+			throw new IllegalStateException("Entity was null");
 		}
 		if(service==null)
 		{
@@ -119,16 +112,7 @@ public class InventoryFormController implements Initializable
 		try 
 		{
 			entity=getFormData();
-			List<Product>list=service.findAll();
-			boolean nameExists = false;
-			for (Product product : list) 
-			{
-				if(entity.getName().equals(product.getName())&&nameExists==false)
-				{
-					nameExists=true;
-					Alerts.showAlert("Nome repetido", "Existem produtos no inventario com o mesmo nome", "Verifique o nome de cada produto para que não sejam confundidos", AlertType.ERROR);
-				}
-			}
+			
 			service.saveOrUpdate(entity);
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
@@ -143,7 +127,6 @@ public class InventoryFormController implements Initializable
 		}
 	}
 	
-	//Notifica cada listener para disparar o evento
 	private void notifyChangeListeners() 
 	{
 		for (DataChangeListeners listener : dataChangeListeners)
@@ -153,61 +136,54 @@ public class InventoryFormController implements Initializable
 		
 	}
 	
-	//Pega os dados do formulario
  	private Product getFormData() 
 	{
 		Product obj=new Product();
 		
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
 		
-		//Exceção persolazidada
 		ValidationException exception=new ValidationException("Validate Exception");
 
-		//Verifica se o campo nome esta vazio
 		if(txtName.getText()==null||txtName.getText().trim().equals(""))
 		{
 			exception.addErrors("name", "Esse campo não pode ficar vazio");
 		}		
 		obj.setName(txtName.getText());
 		
-		//Verifica se o campo marca esta vazio
-		if(txtMarca.getText()==null||txtMarca.getText().trim().equals(""))
+		if(txtBrand.getText()==null||txtBrand.getText().trim().equals(""))
 		{
 			exception.addErrors("brand", "Esse campo não pode ficar vazio");
 		}
-		obj.setBrand(txtMarca.getText());
+		obj.setBrand(txtBrand.getText());
 		
-		if(txtQuantidade.getText()==null||txtQuantidade.getText().trim().equals(""))
+		if(txtQuantity.getText()==null||txtQuantity.getText().trim().equals(""))
 		{
 			exception.addErrors("quantity", "Esse campo não pode ficar vazio");
 		}
-		obj.setQuantity(Utils.tryParseToInt(txtQuantidade.getText()));
+		obj.setQuantity(Utils.tryParseToInt(txtQuantity.getText()));
 		
-		//Verifica se o campo cor esta vazio
-		if(txtCor.getText()==null||txtCor.getText().trim().equals(""))
+		if(txtColor.getText()==null||txtColor.getText().trim().equals(""))
 		{
 			exception.addErrors("color", "Esse campo não pode ficar vazio");
 		}
-		obj.setColor(txtCor.getText());
+		obj.setColor(txtColor.getText());
 		
-		if(txtCodigo.getText()==null||txtCodigo.getText().trim().equals(""))
+		if(txtCode.getText()==null||txtCode.getText().trim().equals(""))
 		{
 			exception.addErrors("code", "Esse campo não pode ficar vazio");
 		}
-		obj.setCode(txtCodigo.getText());
+		obj.setCode(txtCode.getText());
 		
-		//Verifica se o campo pre;o de fabrica esta vazio
-		if(txtPrecoFabrica.getText()==null||txtPrecoFabrica.getText().trim().equals(""))
+		if(txtFactoryPrice.getText()==null||txtFactoryPrice.getText().trim().equals(""))
 		{
 			exception.addErrors("factoryPrice", "Esse campo não pode ficar vazio");
 		}
-		obj.setFactoryPrice(Utils.tryParseToDouble(txtPrecoFabrica.getText()));
+		obj.setFactoryPrice(Utils.tryParseToDouble(txtFactoryPrice.getText()));
 		
-		obj.setSalePrice(Utils.tryParseToDouble( txtPrecoVenda.getText()));
+		obj.setSalePrice(Utils.tryParseToDouble( txtSalePrice.getText()));
 		
 		obj.setCategory(comboBoxCategory.getValue());
 		
-		// Se ouver mais de um erro na lista de essro a excessao sera lançada
 		if (exception.getErrors().size() > 0) 
 		{
 			throw exception;
@@ -220,7 +196,6 @@ public class InventoryFormController implements Initializable
 	public  void onBtCancelAction(ActionEvent event)
 	{
 		Utils.currentStage(event).close();
-		
 	}
 	
 	@Override
@@ -234,15 +209,16 @@ public class InventoryFormController implements Initializable
 	{
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtName, 30);
-		Constraints.setTextFieldInteger(txtQuantidade);
-		Constraints.setTextFieldMaxLength(txtCodigo, 20);
-		Constraints.setTextFieldDouble(txtPrecoFabrica);
-		Constraints.setTextFieldDouble(txtPrecoVenda);
+		Constraints.setTextFieldMaxLength(txtBrand, 20);
+		Constraints.setTextFieldInteger(txtQuantity);
+		Constraints.setTextFieldMaxLength(txtColor, 20);
+		Constraints.setTextFieldMaxLength(txtCode, 20);
+		Constraints.setTextFieldDouble(txtFactoryPrice);
+		Constraints.setTextFieldDouble(txtSalePrice);
 		
 		initializeComboBoxCategory();
 	}
 	
-	//Carrega os dados do entity  nos testFields do formulario
 	public void updateFormData()
 	{
 		if(entity==null)
@@ -252,12 +228,12 @@ public class InventoryFormController implements Initializable
 		
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
-		txtMarca.setText(entity.getBrand());
-		txtQuantidade.setText(String.valueOf(entity.getQuantity()));
-		txtCor.setText(entity.getColor());
-		txtCodigo.setText((entity.getCode()));
-		txtPrecoFabrica.setText(String.valueOf(entity.getFactoryPrice()));
-		txtPrecoVenda.setText(String.valueOf(entity.getSalePrice()));
+		txtBrand.setText(entity.getBrand());
+		txtQuantity.setText(String.valueOf(entity.getQuantity()));
+		txtColor.setText(entity.getColor());
+		txtCode.setText((entity.getCode()));
+		txtFactoryPrice.setText(String.valueOf(entity.getFactoryPrice()));
+		txtSalePrice.setText(String.valueOf(entity.getSalePrice()));
 		
 		if(entity.getCategory()==null)
 		{
@@ -273,7 +249,7 @@ public class InventoryFormController implements Initializable
 	{
 		if(categoryService==null)
 		{
-			throw new IllegalStateException("DepartmentService was null");
+			throw new IllegalStateException("CategoryProductService was null");
 		}
 		List<CategoryProduct> list=categoryService.findAll();
 		
@@ -282,17 +258,16 @@ public class InventoryFormController implements Initializable
 		comboBoxCategory.setItems(obsList);
 	}
 	
-	//Escreve a mensagem de erro na label de ErrorName
 	private void setErrorMessages(Map<String,String>errors)
 	{
 		Set<String>fields=errors.keySet();
 		
 		labelErrorName.setText(fields.contains("name")?errors.get("name"):"");		
-		labelErrorMarca.setText(fields.contains("brand")?errors.get("brand"):"");	
-		labelErrorQuantidade.setText(fields.contains("quantity")?errors.get("quantity"):"");
-		labelErrorCor.setText(fields.contains("color")?errors.get("color"):"");		
+		labelErrorBrand.setText(fields.contains("brand")?errors.get("brand"):"");	
+		labelErrorQuantity.setText(fields.contains("quantity")?errors.get("quantity"):"");
+		labelErrorColor.setText(fields.contains("color")?errors.get("color"):"");		
 		labelErrorCode.setText(fields.contains("code")?errors.get("code"):"");
-		labelErrorPrecoFabrica.setText(fields.contains("factoryPrice")?errors.get("factoryPrice"):"");
+		labelErrorFactoryPrice.setText(fields.contains("factoryPrice")?errors.get("factoryPrice"):"");
 		
 	}
 	

@@ -28,7 +28,7 @@
             <TableColumn fx:id="tableColumColor" prefWidth="100.0" text="Cor" />
             <TableColumn fx:id="tableColumQiantity" prefWidth="75.0" text="Quantidade" />
             <TableColumn fx:id="tableColumBrand" prefWidth="100.0" text="Marca" />
-            <TableColumn fx:id="tableColumNCode" prefWidth="75.0" text="Codigo" />
+            <TableColumn fx:id="tableColumCode" prefWidth="75.0" text="Codigo" />
             <TableColumn fx:id="tableColumFactoryPrice" prefWidth="100.0" text="Preço de fabrica" />
             <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Preço de venda" />
             <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" />

@@ -47,6 +47,8 @@ public class SaleListController  implements Initializable,DataChangeListeners
 	@FXML
 	private TableColumn<Sale, String > tableColumClientName;
 	@FXML
+	private TableColumn<Sale, String > tableColumCustomerPhone;
+	@FXML
 	private TableColumn<Sale, String > tableColumDeliveryAddres;
 	@FXML
 	private TableColumn<Sale,Double > tableColumSalePrice;
@@ -72,8 +74,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		initializeNodes();
 		
 		 Stage stage=(Stage)Main.getMainScene().getWindow();	
-		 tableViewSale.prefHeightProperty().bind(stage.heightProperty());
-		
+		 tableViewSale.prefHeightProperty().bind(stage.heightProperty());		
 	}
 	
 	public void onBtNewSale(ActionEvent event)
@@ -124,11 +125,12 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		Utils.formatTableColumnDate(tableColumSaleDate, "dd/MM/yyyy");
 		
 		tableColumClientName.setCellValueFactory(new PropertyValueFactory<>("clientName"));
+		tableColumCustomerPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
 		tableColumDeliveryAddres.setCellValueFactory(new PropertyValueFactory<>("deliveryAddress"));
 		
-		tableColumnProductSale.setCellValueFactory(new PropertyValueFactory<>("productName"));
+		tableColumnProductSale.setCellValueFactory(new PropertyValueFactory<>("saleProductDescription"));
 		
-		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("total"));
+		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("saleValue"));
 
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewSale.prefHeightProperty().bind(stage.heightProperty());
@@ -155,7 +157,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<Sale, Sale>() 
 		{ 
-		 private final Button button = new Button("Remove"); 
+		 private final Button button = new Button("Remover"); 
 		 @Override
 		 protected void updateItem(Sale obj, boolean empty) 
 		 { 
@@ -174,7 +176,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 
 	private void removeEntity(Sale obj) 
 	{
-		Optional<ButtonType>result= Alerts.showConfirmation("Confirmation", "Are you sure to delete");
+		Optional<ButtonType>result= Alerts.showConfirmation("Confirmação", "Tem certeza que deseja apagar o registro dessa venda ?");
 		
 		if(result.get()==ButtonType.OK)
 		{
@@ -186,8 +188,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 			try
 			{
 				services.remove(obj);
-				updateTableView();
-				
+				updateTableView();			
 			} 
 			catch (DbIntegrityException e)
 			{
@@ -203,7 +204,4 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		updateTableView();
 		
 	} 
-
-	
-
 }

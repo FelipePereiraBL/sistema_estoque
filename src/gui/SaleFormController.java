@@ -27,30 +27,28 @@ public class SaleFormController implements Initializable
 {
 	private List<DataChangeListeners>dataChangeListeners=new ArrayList<>();
 	
-	//Dependencia
 	private Sale entity;
 	
-	//Objeto produto vazio
 	private Product productSale;
 	
-	//Dependencia
 	private ProductService service;
-	
-	//Dependencia
+
 	private SaleService saleService;
 	
 	@FXML
 	private TextField txtId;
 	@FXML
-	private TextField txtNameCliente;
+	private TextField txtClientName;
 	@FXML
-	private TextField txtEnderecoEntrega;
+	private TextField txtCustomerPhone;
 	@FXML
-	private TextField txtNomeProduto;
+	private TextField txtDeliveryAddress;
 	@FXML
-	private TextField txtProdutoColor;
+	private TextField txtProductName;
 	@FXML
-	private TextField txtProdutoBrand;
+	private TextField txtProductColor;
+	@FXML
+	private TextField txtProductBrand;
 
 	@FXML
 	private Button btSave;
@@ -65,16 +63,12 @@ public class SaleFormController implements Initializable
 	private Label labelProduct;
 	@FXML
 	private Label labelSaleTotal;
-	@FXML
-	private Label labelError;
 	
-	//Injeção da dependencia
 	public void setSale(Sale entity)
 	{
 		this.entity = entity;
 	}
 
-	//Injeção da dependencia
 	public void setService(ProductService service,SaleService saleService) 
 	{
 		this.service = service;
@@ -90,10 +84,9 @@ public class SaleFormController implements Initializable
 	public  void onBtSaveAction(ActionEvent event)
 	{
 		
-		//Verifica se as dependencias foram injetadas
 		if(entity==null)
 		{
-			throw new IllegalStateException("Services was null");
+			throw new IllegalStateException("Entity was null");
 		}
 		if(service==null)
 		{
@@ -107,9 +100,8 @@ public class SaleFormController implements Initializable
 				if(productSale.getQuantity()>0)
 				{
 					entity=getFormData();
-					saleService.saveOrUpdate(entity);
+					saleService.save(entity);
 					
-					//Atualiza a quantidade do produto no inventario
 					productSale.setQuantity(productSale.getQuantity()-1);
 					service.saveOrUpdate(productSale);
 					notifyChangeListeners();
@@ -128,8 +120,7 @@ public class SaleFormController implements Initializable
 		}
 		else 
 		{
-			Alerts.showAlert("Alerta", "Nenhum produto foi escolhido", "Verifique se todos os campos foram preenchidos e click em Adicionar produto para continuar !", AlertType.INFORMATION);
-
+			Alerts.showAlert("Alerta", "Nenhum produto foi escolhido", "Click em ESCOLHER PRODUTO produto para continuar !", AlertType.INFORMATION);
 		}
 	}
 		
@@ -138,26 +129,26 @@ public class SaleFormController implements Initializable
 		for (DataChangeListeners listener : dataChangeListeners)
 		{
 			listener.onChanged();		
-		}
-		
+		}		
 	}
 		
 	
-	//Pega os dados do formulario
  	private Sale getFormData() 
 	{
 		Sale obj=new Sale();
+		
 		
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
 	
 		obj.setSaleDate(new Date());
 				
-		obj.setClientName(txtNameCliente.getText());
+		obj.setClientName(txtClientName.getText());
+		obj.setCustomerPhone(txtCustomerPhone.getText());
 		
-		obj.setProductName(txtNomeProduto.getText());
+		obj.setSaleProductDescription(productSale.toString());
 		
-		obj.setDeliveryAddress(txtEnderecoEntrega.getText());	
-		obj.setTotal(salePrice);
+		obj.setDeliveryAddress(txtDeliveryAddress.getText());	
+		obj.setSaleValue(salePrice);
 
 		return obj;
 	}	
@@ -177,48 +168,47 @@ public class SaleFormController implements Initializable
 		
 	}
 	
-	//Pega o produto no inventario a partir do nome digitado
 	public void CheckProductSale()
 	{
 		List<Product>products=service.findAll();
 		
-		//Produto encontrado ?
 		boolean productFound=false,brandFound=false,colorFound=false;
 		
-		//Conteudo dos alerts
 		int productQuantity=0;
 		String productName = null,productColor=null,productBrand=null;
 		
 		for (Product product : products)
 		{
-			if(txtNomeProduto.getText().toString().equals(product.getName().toString()) && productFound==false)
+			if(txtProductName.getText().toString().equals(product.getName().toString()) && productFound==false)
 			{
 				productFound=true;
 				
-				if(txtProdutoBrand.getText().toString().equals(product.getBrand().toString()) && brandFound==false)
+				if(txtProductBrand.getText().toString().equals(product.getBrand().toString()) && brandFound==false)
 				{
 					brandFound=true;
 					
-					if(txtProdutoColor.getText().toString().equals(product.getColor().toString())&&colorFound==false)
+					if(txtProductColor.getText().toString().equals(product.getColor().toString())&&colorFound==false)
 					{
 						colorFound=true;
 						
 						salePrice=product.getSalePrice();
+						
 						productName=product.getName();
 						productQuantity=product.getQuantity();
 						productColor=product.getColor();
 						productBrand=product.getBrand();
-						labelProduct.setText(product.toString());
-						labelSaleTotal.setText("R$"+salePrice.toString());
 						
-						if( txtNameCliente.getText().trim().equals("") || txtEnderecoEntrega.getText().trim().equals(""))
+						if( txtClientName.getText().trim().equals("") || txtDeliveryAddress.getText().trim().equals(""))
 						{
-							
+							Alerts.showAlert("Campos nulos", "", "Verifique se todos os campos foram preenchidos e click em Adicionar produto para continuar !", AlertType.INFORMATION);
 						}
 						else
 						{
-							//Produto buscado no inventario e injetado no produto vazio para o valor da quaantidade ser atualizado no metodo onBtSaveAction
 							productSale=product;
+							
+							if(productQuantity>0)
+							labelProduct.setText(product.toString());
+							labelSaleTotal.setText("R$"+salePrice.toString());
 						}
 						
 					
@@ -226,42 +216,43 @@ public class SaleFormController implements Initializable
 				}							
 			}						
 		}
-		if(productQuantity==0 && productFound==true && colorFound==true)
+		if(productFound==true && colorFound==true&&brandFound==true&&productQuantity==0)
 		{
-			Alerts.showAlert("Alerta de estoque", "Esse produto está esgotado !", "O produto "+productName+" da marca"+productBrand+" da cor "+productColor+" está esgotado !", AlertType.INFORMATION);
+			Alerts.showAlert("Alerta de estoque", "Esse produto está esgotado !", "O produto "+productName+" da marca "+productBrand+" da cor "+productColor+" está esgotado !", AlertType.INFORMATION);
 		}
 		
 		if(productQuantity<=3 && productQuantity>0&& productFound==true)
 		{
-			Alerts.showAlert("Alerta de estoque", "Esse produto está acabando !", "Após essa venda, terá apenas "+(productQuantity-1)+" "+productName+" da marca"+productBrand+" da cor "+productColor+" no estoque", AlertType.INFORMATION);
+			Alerts.showAlert("Alerta de estoque", "Esse produto está acabando !", "Após essa venda, terá apenas "+(productQuantity-1)+" "+productName+" da marca "+productBrand+" da cor "+productColor+" no estoque", AlertType.INFORMATION);
 		}
 		
 		if(productFound==false)
 		{
-			Alerts.showAlert("Produto não encontrado", "Esse produto não está no estoque ou o nome está incorreto !", null, AlertType.INFORMATION);
-			txtNomeProduto.setText("");
+			Alerts.showAlert("Produto não encontrado", "Esse produto não está no estoque ou o nome do produto está incorreto ou nulo!", null, AlertType.INFORMATION);
+			txtClientName.setText("");
 		}
 		
 		if(productFound==true&&brandFound==false)
 		{
-			Alerts.showAlert("Marca não encontrada", "Essa marca não está no estoque ou o nome da marca está incorreto !", null, AlertType.INFORMATION);
-			txtProdutoBrand.setText("");
+			Alerts.showAlert("Marca não encontrada", "Essa marca não está no estoque ou o campo da marca está incorreto ou nulo!", null, AlertType.INFORMATION);
+			txtProductBrand.setText("");
 		}
 		
 		if(productFound==true&&brandFound==true&&colorFound==false)
 		{
-			Alerts.showAlert("Cor não encontrada", "Essa cor não está no estoque ou o nome da cor está incorreto", null, AlertType.INFORMATION);
-			txtProdutoColor.setText("");
+			Alerts.showAlert("Cor não encontrada", "Essa cor não está no estoque ou o campo da cor está incorreto ou nulo", null, AlertType.INFORMATION);
+			txtProductColor.setText("");
 		}
 	}
 	
 	private void initializeNodes()
 	{
 		Constraints.setTextFieldInteger(txtId);
-		Constraints.setTextFieldMaxLength(txtEnderecoEntrega, 100);
-		Constraints.setTextFieldMaxLength(txtNameCliente, 40);
-		Constraints.setTextFieldMaxLength(txtNomeProduto, 30);
-		Constraints.setTextFieldMaxLength(txtProdutoColor, 10);
-		Constraints.setTextFieldMaxLength(txtProdutoBrand, 50);
+		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
+		Constraints.setTextFieldMaxLength(txtClientName, 40);
+		Constraints.setTextFieldMaxLength(txtProductName, 30);
+		Constraints.setTextFieldMaxLength(txtProductColor, 20);
+		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
+		Constraints.setTextFieldMaxLength(txtCustomerPhone, 13);
 	}
 }

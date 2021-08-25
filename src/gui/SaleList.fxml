@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="371.0" prefWidth="944.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleListController">
+<VBox prefHeight="371.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleListController">
    <children>
       <Label prefHeight="44.0" prefWidth="189.0" text="Registro de vendas">
          <font>
@@ -20,15 +20,16 @@
           <Button fx:id="BtNewSale" mnemonicParsing="false" onAction="#onBtNewSale" text="Nova Venda" />
         </items>
       </ToolBar>
-      <TableView fx:id="tableViewSale" prefHeight="277.0" prefWidth="778.0">
+      <TableView fx:id="tableViewSale" prefHeight="277.0" prefWidth="962.0">
         <columns>
           <TableColumn fx:id="tableColumId" prefWidth="30.0" text="Id" />
-            <TableColumn fx:id="tableColumSaleDate" prefWidth="93.0" text="Data" />
-          <TableColumn fx:id="tableColumClientName" prefWidth="200.0" text="Nome do cliente" />
-            <TableColumn fx:id="tableColumDeliveryAddres" prefWidth="200.0" text="Endereço de entrega" />
-            <TableColumn fx:id="tableColumSalePrice" prefWidth="100.0" text="Valor da venda" />
-            <TableColumn fx:id="tableColumnProductSale" prefWidth="120.0" text="Produto vendido" />
-            <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
+            <TableColumn fx:id="tableColumSaleDate" prefWidth="77.0" text="Data" />
+          <TableColumn fx:id="tableColumClientName" prefWidth="223.0" text="Nome do cliente" />
+            <TableColumn fx:id="tableColumCustomerPhone" prefWidth="116.0" text="Telefone do cliente" />
+            <TableColumn fx:id="tableColumDeliveryAddres" prefWidth="241.0" text="Endereço de entrega" />
+            <TableColumn fx:id="tableColumSalePrice" prefWidth="98.0" text="Valor da venda" />
+            <TableColumn fx:id="tableColumnProductSale" prefWidth="287.0" text="Produto vendido" />
+            <TableColumn fx:id="tableColumnREMOVE" minWidth="0.0" prefWidth="91.0" />
         </columns>
       </TableView>
    </children>

@@ -25,13 +25,10 @@ import model.services.CategoryProductService;
 
 public class CategoryProductFormController implements Initializable
 {
-	//Dependencia
 	private CategoryProduct entity;
 	
-	//Dependencia
 	private CategoryProductService service;
-	
-	//Lista de objetos que receberão a notificação(quando os dados forem atualizados)
+
 	private List<DataChangeListeners>dataChangeListeners=new ArrayList<>();
 	
 	@FXML
@@ -47,19 +44,16 @@ public class CategoryProductFormController implements Initializable
 	@FXML
 	private Button btCancel;
 	
-	//Injeção da dependencia
 	public void setCategoryProduct(CategoryProduct entity)
 	{
 		this.entity = entity;
 	}
 
-	//Injeção da dependencia
 	public void setService(CategoryProductService service) 
 	{
 		this.service = service;
 	}
 	
-	//Adiciona objetos na lista para receber a notificação 
 	public void subscribleChangeListener(DataChangeListeners listener)
 	{
 		dataChangeListeners.add(listener);
@@ -68,10 +62,9 @@ public class CategoryProductFormController implements Initializable
 	@FXML
 	public  void onBtSaveAction(ActionEvent event)
 	{
-		//Verifica se as dependencias foram injetadas
 		if(entity==null)
 		{
-			throw new IllegalStateException("Services was null");
+			throw new IllegalStateException("Entity was null");
 		}
 		if(service==null)
 		{
@@ -95,7 +88,6 @@ public class CategoryProductFormController implements Initializable
 		}
 	}
 	
-	//Notifica cada listener para disparar o evento
 	private void notifyChangeListeners() 
 	{
 		for (DataChangeListeners listener : dataChangeListeners)
@@ -105,17 +97,14 @@ public class CategoryProductFormController implements Initializable
 		
 	}
 	
-	//Pega os dados do formulario
 	private CategoryProduct getFormData() 
 	{
 		CategoryProduct obj=new CategoryProduct();
 		
-		//Exceção persolazidada
 		ValidationException exception=new ValidationException("Validate Exception");
 		
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
 
-		//Verifica se o campo nome esta vazio
 		if(txtName.getText()==null||txtName.getText().trim().equals(""))
 		{
 			exception.addErrors("name", "Esse campo não pode ficar vazio");
@@ -123,13 +112,11 @@ public class CategoryProductFormController implements Initializable
 		
 		obj.setName(txtName.getText());
 		
-		//Se ouver mais de um erro na lista de essro a excessao sera lançada
 		if(exception.getErrors().size()>0)
 		{
 			throw exception;
 		}
 	
-		
 		return obj;
 	}
 	
@@ -142,8 +129,7 @@ public class CategoryProductFormController implements Initializable
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
-	{
-		initializeNodes();
+	{		initializeNodes();
 		
 	}
 	
@@ -153,7 +139,6 @@ public class CategoryProductFormController implements Initializable
 		Constraints.setTextFieldMaxLength(txtName, 30);
 	}
 	
-	//Carrega os dados do entity  nos testFields do formulario
 	public void updateFormData()
 	{
 		if(entity==null)
@@ -165,7 +150,6 @@ public class CategoryProductFormController implements Initializable
 		txtName.setText(entity.getName());
 	}
 	
-	//Escreve a mensagem de erro na label de ErrorName
 	private void setErrorMessages(Map<String,String>errors)
 	{
 		Set<String>fields=errors.keySet();
@@ -173,9 +157,7 @@ public class CategoryProductFormController implements Initializable
 		if(fields.contains("name"))
 		{
 			labelErrorName.setText(errors.get("name"));
-		}
-		
+		}		
 	}
 	
-
 }

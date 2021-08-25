@@ -15,15 +15,11 @@ public class SaleService
 		return dao.findAll();
 	}
 	
-	public void saveOrUpdate(Sale obj)
+	public void save(Sale obj)
 	{
 		if(obj.getId()==null)
 		{
 			dao.insert(obj);
-		}
-		else
-		{
-			dao.update(obj);
 		}
 	}
 	

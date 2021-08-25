@@ -30,16 +30,17 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO sale "
-					+ "(saleDate, clientName, deliveryAddress, productName, totalSale) "
+					+ "(saleDate, clientName, customerPhone, deliveryAddress, saleProductDescription, saleValue) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setDate(1,new java.sql.Date( obj.getSaleDate().getTime()));
 			st.setString(2, obj.getClientName());
-			st.setString(3, obj.getDeliveryAddress());
-			st.setString(4, obj.getProductName());
-			st.setDouble(5, obj.getTotal());
+			st.setString(3, obj.getCustomerPhone());
+			st.setString(4, obj.getDeliveryAddress());
+			st.setString(5, obj.getSaleProductDescription());
+			st.setDouble(6, obj.getSaleValue());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -69,40 +70,7 @@ private Connection conn;
 	}
 //
 
-	//	@Override
-//	public void update(Product obj)
-//	{
-//		PreparedStatement st = null;
-//		try 
-//		{
-//			st = conn.prepareStatement(
-//					"UPDATE inventory "
-//					+ "SET nome = ?, marca = ?, quantidade = ?, cor = ?, codigo = ?, precoFabrica = ?, precoVenda = ?, CategoryProductId = ? "
-//					+ "WHERE Id = ?");
-//			
-//			st.setString(1, obj.getName());
-//			st.setString(2, obj.getBrand());
-//			st.setInt(3, obj.getQuantity());
-//			st.setString(4, obj.getColor());
-//			st.setString(5, obj.getCode());
-//			st.setDouble(6, obj.getFactoryPrice());
-//			st.setDouble(7, obj.getSalePrice());
-//			st.setInt(8, obj.getCategory().getId());
-//			st.setInt(9, obj.getId());
-//
-//			
-//			st.executeUpdate();
-//		}
-//		catch (SQLException e) 
-//		{
-//			throw new DbException(e.getMessage());
-//		}
-//		finally 
-//		{
-//			DB.closeStatement(st);
-//		}
-//	}
-//
+
 	@Override
 	public void deleteById(Integer id)
 	{
@@ -124,64 +92,6 @@ private Connection conn;
 			DB.closeStatement(st);
 		}
 	}
-//
-//	@Override
-//	public Product findById(Integer id)
-//	{
-//		PreparedStatement st = null;
-//		ResultSet rs = null;
-//		try 
-//		{
-//			st = conn.prepareStatement(
-//					"SELECT inventory.*,category.name as CatName "
-//					+ "FROM inventory INNER JOIN category "
-//					+ "ON inventory.CategoryProductId = category.id "
-//					+ "WHERE inventory.id = ?");
-//			
-//			st.setInt(1, id);
-//			rs = st.executeQuery();
-//			if (rs.next()) 
-//			{
-//				CategoryProduct cat = instantiateCategoryProduct(rs);
-//				Product obj = instantiateProduct(rs, cat);
-//				return obj;
-//			}
-//			return null;
-//		}
-//		catch (SQLException e) 
-//		{
-//			throw new DbException(e.getMessage());
-//		}
-//		finally 
-//		{
-//			DB.closeStatement(st);
-//			DB.closeResultSet(rs);
-//		}
-//	}
-//
-//	private Product instantiateProduct(ResultSet rs, CategoryProduct cat) throws SQLException 
-//	{
-//		Product obj = new Product();
-//		obj.setId(rs.getInt("id"));
-//		obj.setName(rs.getString("nome"));
-//		obj.setBrand(rs.getString("marca"));
-//		obj.setQuantity(rs.getInt("quantidade"));
-//		obj.setColor(rs.getString("cor"));
-//		obj.setCode(rs.getString("codigo"));
-//		obj.setFactoryPrice(rs.getDouble("precoFabrica")); 
-//		obj.setSalePrice(rs.getDouble("precoVenda")); 
-//		obj.setCategory(cat);
-//		
-//		return obj;
-//	}
-//
-//	private CategoryProduct instantiateCategoryProduct(ResultSet rs) throws SQLException 
-//	{
-//		CategoryProduct cat = new CategoryProduct();
-//		cat.setId(rs.getInt("CategoryProductId"));
-//		cat.setName(rs.getString("CatName"));
-//		return cat;
-//	}
 
 
 	@Override
@@ -221,9 +131,10 @@ private Connection conn;
 				obj.setId(rs.getInt("id"));
 				obj.setSaleDate(rs.getDate("saleDate"));
 				obj.setClientName(rs.getString("clientName"));
+				obj.setCustomerPhone(rs.getString("customerPhone"));
 				obj.setDeliveryAddress(rs.getString("deliveryAddress"));
-				obj.setProductName(rs.getString("productName"));
-				obj.setTotal(rs.getDouble("totalSale"));
+				obj.setSaleProductDescription(rs.getString("saleProductDescription"));
+				obj.setSaleValue(rs.getDouble("saleValue"));
 				list.add(obj);
 			}
 			return list;

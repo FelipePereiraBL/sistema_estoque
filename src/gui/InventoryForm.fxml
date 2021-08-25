@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="306.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
+<AnchorPane prefHeight="309.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
    <children>
       <GridPane layoutX="12.0" layoutY="18.0" prefHeight="263.0" prefWidth="512.0">
         <columnConstraints>
@@ -37,10 +37,10 @@
             <Label text="Nome" GridPane.rowIndex="1" />
             <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
             <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="txtMarca" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtCor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtCodigo" prefHeight="25.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="txtPrecoVenda" prefHeight="25.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <TextField fx:id="txtBrand" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtColor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtCode" prefHeight="25.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="txtSalePrice" prefHeight="25.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <padding>
                   <Insets left="15.0" />
                </padding></TextField>
@@ -66,25 +66,20 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="labelErrorPrecoFabrica" prefHeight="17.0" prefWidth="160.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="6">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
             <Label fx:id="labelErrorCode" prefHeight="17.0" prefWidth="155.0" textFill="#dd0f0f" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <font>
                   <Font name="System Italic" size="10.0" />
                </font>
             </Label>
             <Label text="Quantidade" GridPane.rowIndex="3" />
-            <TextField fx:id="txtQuantidade" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtQuantity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="labelErrorQuantidade" prefHeight="17.0" prefWidth="153.0" textFill="#ee0b0b" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font name="System Italic" size="10.0" />
                </font>
             </Label>
             <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="txtPrecoFabrica" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextField fx:id="txtFactoryPrice" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -93,19 +88,19 @@
                </padding>
             </TextField>
             <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <HBox fillHeight="false" prefHeight="74.0" prefWidth="200.0" spacing="9.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-               <children>
-                  <Button fx:id="btSave" mnemonicParsing="false" onAction="#onBtSaveAction" text="Save" />
-                  <Button fx:id="btCancel" mnemonicParsing="false" onAction="#onBtCancelAction" text="Cancel" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets top="40.0" />
-               </padding>
-            </HBox>
          </children>
       </GridPane>
+      <HBox fillHeight="false" layoutX="183.0" layoutY="261.0" prefHeight="47.0" prefWidth="156.0" spacing="9.0">
+         <children>
+            <Button fx:id="btSave" mnemonicParsing="false" onAction="#onBtSaveAction" text="Save" />
+            <Button fx:id="btCancel" mnemonicParsing="false" onAction="#onBtCancelAction" text="Cancel" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>

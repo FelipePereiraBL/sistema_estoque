@@ -35,6 +35,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="ID" />
@@ -43,14 +44,14 @@
                <GridPane.margin>
                   <Insets right="-5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="txtNameCliente" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="txtClientName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="-5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="txtEnderecoEntrega" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Endereço de entrega" GridPane.rowIndex="2" />
-            <Button fx:id="btProductSale" mnemonicParsing="false" onAction="#CheckProductSale" text="Escolher produto" GridPane.rowIndex="3" />
-            <TextField fx:id="txtNomeProduto" prefHeight="25.0" prefWidth="134.0" promptText="Nome completo do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txtDeliveryAddress" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Endereço de entrega" GridPane.rowIndex="3" />
+            <Button fx:id="btProductSale" mnemonicParsing="false" onAction="#CheckProductSale" text="Escolher produto" GridPane.rowIndex="4" />
+            <TextField fx:id="txtProductName" prefHeight="25.0" prefWidth="134.0" promptText="Nome completo do produto" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -60,7 +61,7 @@
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></TextField>
-            <TextField fx:id="txtProdutoBrand" prefHeight="25.0" prefWidth="184.0" promptText="Marca do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txtProductBrand" prefHeight="25.0" prefWidth="184.0" promptText="Marca do produto" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="165.0" right="100.0" />
                </GridPane.margin>
@@ -68,11 +69,13 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtProdutoColor" promptText="Cor do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txtProductColor" promptText="Cor do produto" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="275.0" right="-5.0" />
                </GridPane.margin>
             </TextField>
+            <Label text="Telefone do cliente" GridPane.rowIndex="2" />
+            <TextField fx:id="txtCustomerPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Label layoutX="26.0" layoutY="6.0" prefHeight="17.0" prefWidth="146.0" text="Nova venda">

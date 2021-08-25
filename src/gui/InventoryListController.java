@@ -25,7 +25,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -36,7 +35,6 @@ import model.services.ProductService;
 
 public class InventoryListController implements Initializable,DataChangeListeners
 {
-	//Dependencia 
 	private ProductService services;
 	
 	@FXML
@@ -54,12 +52,11 @@ public class InventoryListController implements Initializable,DataChangeListener
 	@FXML
 	private TableColumn<Product, String > tableColumColor;
 	@FXML
-	private TableColumn<Product, String > tableColumNCode;
+	private TableColumn<Product, String > tableColumCode;
 	@FXML
 	private TableColumn<Product, Double > tableColumFactoryPrice;
 	@FXML
 	private TableColumn<Product, Double > tableColumSalePrice;
-	
 	
 	@FXML
 	private TableColumn<Product, Product > tableColumnEDIT;
@@ -71,11 +68,7 @@ public class InventoryListController implements Initializable,DataChangeListener
 	private Button btNewProduct;
 	
 	private ObservableList<Product> obsList;
-	
-	@FXML
-	private TextField txtSearch;
 
-	//Injeção de dependencia 
 	public void setServices(ProductService services)
 	{
 		this.services = services;
@@ -84,10 +77,8 @@ public class InventoryListController implements Initializable,DataChangeListener
 	public void onBtNewProduct(ActionEvent event)
 	{
 		Stage parentStage=Utils.currentStage(event);
-		//Cria um Product vazio para ser passado para o formulario
 		Product obj=new Product();
 		createDialogForm(obj,"/gui/InventoryForm.fxml",parentStage);
-
 	}
 
 	@Override
@@ -95,13 +86,11 @@ public class InventoryListController implements Initializable,DataChangeListener
 	{
 		initializeNodes();
 		
-		//Ajusta o tableView em relação a janeta
          Stage stage=(Stage)Main.getMainScene().getWindow();	
          tableViewProducts.prefHeightProperty().bind(stage.heightProperty());
 		
 	}
 	
-	//Inicializa  as colunas da tableView
 	private void initializeNodes() 
 	{
 		tableColumId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -110,14 +99,13 @@ public class InventoryListController implements Initializable,DataChangeListener
 		tableColumBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
 		tableColumQiantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 		tableColumColor.setCellValueFactory(new PropertyValueFactory<>("color"));
-		tableColumNCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+		tableColumCode.setCellValueFactory(new PropertyValueFactory<>("code"));
 		tableColumFactoryPrice.setCellValueFactory(new PropertyValueFactory<>("factoryPrice"));
 		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
 	}
 	
 	public void updateTableView()
 	{
-		//Verifica se a dependencia foi injetada
 		if(services==null)
 		{
 			throw new IllegalStateException("Services was null");
@@ -138,19 +126,16 @@ public class InventoryListController implements Initializable,DataChangeListener
             FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane=loader.load();
 			
-			//Pega o controller de InventoryForm
 			InventoryFormController controller=loader.getController();
-			//Manda o obj(ProductForm vazio para o formulario)
+			
 			controller.setProduct(obj);
-			//Injeção de dependencia
 			controller.setService(new ProductService(),new CategoryProductService());	
 			controller.loadAssociateObjects();
-			//Inscreve essa classe para receber o evento
 			controller.subscribleChangeListener(this);
-			//Carrega os dados do entity  nos testFields do formulario
 			controller.updateFormData();
 			
 			Stage dialogStage=new Stage();
+			
 			dialogStage.setTitle("Insira ou editar produto");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
@@ -166,7 +151,6 @@ public class InventoryListController implements Initializable,DataChangeListener
 		
     }
 
-	//Executa o evento
 	@Override
 	public void onChanged() 
 	{
@@ -174,7 +158,6 @@ public class InventoryListController implements Initializable,DataChangeListener
 		
 	}
 	
-	//Inserir um botão de editar em cada linha da tableView
 	private void initEditButtons()
 	{ 
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
@@ -201,7 +184,6 @@ public class InventoryListController implements Initializable,DataChangeListener
 		  }); 
 		} 
 
-	//Isere um botão para remover os botões associados a categoria de produtos removida
 	private void initRemoveButtons() 
 	{ 
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
@@ -223,10 +205,9 @@ public class InventoryListController implements Initializable,DataChangeListener
 		 }); 
 		}
 
-	//Remove a categoria de produtos
 	private void removeEntity(Product obj) 
 	{
-		Optional<ButtonType>result= Alerts.showConfirmation("Confirmação", "Tem certeza que deseja remover esse produtos");
+		Optional<ButtonType>result= Alerts.showConfirmation("Confirmação", "Tem certeza que deseja remover esse produto ?");
 		
 		if(result.get()==ButtonType.OK)
 		{
@@ -243,7 +224,7 @@ public class InventoryListController implements Initializable,DataChangeListener
 			} 
 			catch (DbIntegrityException e)
 			{
-				Alerts.showAlert("Erro ao remover categoria de produtos", null, e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Erro ao remover produto", null, e.getMessage(), AlertType.ERROR);
 			}
 			
 		}

@@ -34,7 +34,6 @@ import model.services.CategoryProductService;
 
 public class CategoryProductListController implements Initializable,DataChangeListeners
 {
-	//Dependencia 
 	private CategoryProductService services;
 	
 	@FXML
@@ -55,7 +54,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 	
 	private ObservableList<CategoryProduct> obsList;
 
-	//Injeção de dependencia 
 	public void setService(CategoryProductService services) 
 	{
 		this.services = services;
@@ -64,10 +62,8 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 	public void onBtNewCategoryProduct(ActionEvent event)
 	{
 		Stage parentStage=Utils.currentStage(event);
-		//Cria um CategoryProduct vazio para ser passado para o 
 		CategoryProduct obj=new CategoryProduct();
 		createDialogForm(obj,"/gui/CategoryProductForm.fxml",parentStage);
-
 	}
 
 	@Override
@@ -81,7 +77,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		
 	}
 	
-	//Inicializa  as colunas da tableView
 	private void initializeNodes() 
 	{
 		tableColumId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -90,7 +85,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 	
 	public void updateTableView()
 	{
-		//Verifica se a dependencia foi injetada
 		if(services==null)
 		{
 			throw new IllegalStateException("Services was null");
@@ -111,18 +105,15 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 			FXMLLoader loader=new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane=loader.load();
 			
-			//Pega o controller de CategoryProductForm
 			CategoryProductFormController controller=loader.getController();
-			//Manda o obj(CategoryProductForm vazio para o formulario)
+
 			controller.setCategoryProduct(obj);
-			//Injeção de dependencia
 			controller.setService(new CategoryProductService());			
-			//Inscreve essa classe para receber o evento
 			controller.subscribleChangeListener(this);
-			//Carrega os dados do entity  nos testFields do formulario
 			controller.updateFormData();
 			
 			Stage dialogStage=new Stage();
+			
 			dialogStage.setTitle("Insira nova categoria de produto");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
@@ -138,7 +129,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		
 	}
 
-	//Executa o evento
 	@Override
 	public void onChanged() 
 	{
@@ -146,7 +136,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		
 	}
 	
-	//Inserir um botão de editar em cada linha da tableView
 	private void initEditButtons()
 	{ 
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
@@ -173,13 +162,12 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		  }); 
 		} 
 
-	//Isere um botão para remover os botões associados a categoria de produtos removida
 	private void initRemoveButtons() 
 	{ 
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<CategoryProduct, CategoryProduct>() 
 		{ 
-		 private final Button button = new Button("Remove"); 
+		 private final Button button = new Button("Remover"); 
 		 @Override
 		 protected void updateItem(CategoryProduct obj, boolean empty) 
 		 { 
@@ -195,7 +183,6 @@ public class CategoryProductListController implements Initializable,DataChangeLi
 		 }); 
 		}
 
-	//Remove a categoria de produtos
 	private void removeEntity(CategoryProduct obj) 
 	{
 		Optional<ButtonType>result= Alerts.showConfirmation("Confirmação", "Tem certeza que deseja remover essa categoria de produtos");

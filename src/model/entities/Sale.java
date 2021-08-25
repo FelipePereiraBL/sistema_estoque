@@ -10,9 +10,10 @@ public class Sale implements Serializable
 	private Integer id;
 	private Date saleDate;
 	private String clientName;
+	private String customerPhone;
 	private String deliveryAddress;
-	private String productName;
-	private Double total;
+	private String saleProductDescription;
+	private Double saleValue;
 	
 	
 	public  Sale ()
@@ -20,15 +21,16 @@ public class Sale implements Serializable
 		
 	}
 
-	public Sale(Integer id, Date saleDate, String clientName, String deliveryAddress,String productName, Double total)
+	public Sale(Integer id, Date saleDate, String clientName,String customerPhone, String deliveryAddress,String saleProductDescription, Double saleValue)
 	{
 		super();
 		this.id = id;
 		this.saleDate = saleDate;
 		this.clientName = clientName;
+		this.customerPhone=customerPhone;
 		this.deliveryAddress = deliveryAddress;
-		this.productName=productName;
-		this.total=total;
+		this.saleProductDescription=saleProductDescription;
+		this.saleValue=saleValue;
 	}
 
 	public Integer getId() {
@@ -54,6 +56,14 @@ public class Sale implements Serializable
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
+	
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+
+	public void setCustomerPhone(String customerPhone) {
+		this.customerPhone = customerPhone;
+	}
 
 	public String getDeliveryAddress() {
 		return deliveryAddress;
@@ -62,26 +72,25 @@ public class Sale implements Serializable
 	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
 	}
+
+
+	public String getSaleProductDescription() {
+		return saleProductDescription;
+	}
+
+	public void setSaleProductDescription(String saleProductDescription) {
+		this.saleProductDescription = saleProductDescription;
+	}
+
+
+	public Double getSaleValue() {
+		return saleValue;
+	}
+
+	public void setSaleValue(Double saleValue) {
+		this.saleValue = saleValue;
+	}
 	
-	
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public Double getTotal() {
-		return total;
-	}
-
-	public void setTotal(Double total)
-	{
-		this.total = total;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -106,5 +115,6 @@ public class Sale implements Serializable
 			return false;
 		return true;
 	}
+
 
 }
