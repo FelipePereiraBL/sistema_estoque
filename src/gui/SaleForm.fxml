@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="256.0" prefWidth="527.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleFormController">
+<AnchorPane prefHeight="256.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SaleFormController">
    <children>
       <HBox fillHeight="false" layoutX="204.0" layoutY="186.0" prefHeight="45.0" prefWidth="120.0" spacing="9.0">
          <children>
@@ -25,7 +25,7 @@
             <Insets top="40.0" />
          </padding>
       </HBox>
-      <GridPane layoutX="12.0" layoutY="36.0" prefHeight="141.0" prefWidth="491.0">
+      <GridPane layoutX="12.0" layoutY="36.0" prefHeight="141.0" prefWidth="655.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="139.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="373.0" minWidth="10.0" prefWidth="373.0" />
@@ -39,12 +39,44 @@
          <children>
             <Label text="ID" />
             <Label text="Nome do cliente" GridPane.rowIndex="1" />
-            <TextField fx:id="txtId" editable="false" prefHeight="25.0" prefWidth="261.0" GridPane.columnIndex="1" />
-            <TextField fx:id="txtNameCliente" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtId" editable="false" prefHeight="25.0" prefWidth="376.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="-5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="txtNameCliente" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="-5.0" />
+               </GridPane.margin></TextField>
             <TextField fx:id="txtEnderecoEntrega" prefHeight="25.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Endereço de entrega" GridPane.rowIndex="2" />
             <Button fx:id="btProductSale" mnemonicParsing="false" onAction="#CheckProductSale" text="Escolher produto" GridPane.rowIndex="3" />
-            <TextField fx:id="txtNomeProduto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtNomeProduto" prefHeight="25.0" prefWidth="134.0" promptText="Nome completo do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets right="210.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></TextField>
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="-5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="txtProdutoBrand" prefHeight="25.0" prefWidth="184.0" promptText="Marca do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="165.0" right="100.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtProdutoColor" promptText="Cor do produto" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="275.0" right="-5.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
       <Label layoutX="26.0" layoutY="6.0" prefHeight="17.0" prefWidth="146.0" text="Nova venda">
@@ -55,6 +87,16 @@
       <Label fx:id="labelProduct" layoutX="20.0" layoutY="182.0" prefHeight="27.0" prefWidth="491.0">
          <font>
             <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="324.0" layoutY="6.0" prefHeight="27.0" prefWidth="60.0" text="Valor :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelSaleTotal" layoutX="382.0" layoutY="11.0" prefHeight="20.0" prefWidth="66.0">
+         <font>
+            <Font size="14.0" />
          </font>
       </Label>
    </children>

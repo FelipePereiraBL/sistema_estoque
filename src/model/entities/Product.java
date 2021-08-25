@@ -135,7 +135,7 @@ public class Product implements Serializable
 
 	@Override
 	public String toString() {
-		return name+"/"+brand+"/"+color+"/R$"+String.format("%.2f", salePrice);
+		return name+"/"+brand+"/"+color;
 	}
 
 	

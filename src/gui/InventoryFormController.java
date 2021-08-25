@@ -119,6 +119,17 @@ public class InventoryFormController implements Initializable
 		try 
 		{
 			entity=getFormData();
+			List<Product>list=service.findAll();
+			boolean nameExists = false;
+			for (Product product : list) 
+			{
+				if(entity.getName().equals(product.getName())&&nameExists==false)
+				{
+					nameExists=true;
+					Alerts.showAlert("Nome repetido", "Já existe um produto com esse nome no estoque", "Digite o nome exato do produto", AlertType.ERROR);
+				}
+			}
+			if(nameExists!=true)
 			service.saveOrUpdate(entity);
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
