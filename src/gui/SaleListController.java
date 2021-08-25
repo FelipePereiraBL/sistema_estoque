@@ -99,6 +99,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 
 			controller.setService(new ProductService(),new SaleService());	
 
+			controller.subscribleChangeListener(this);
 			
 			Stage dialogStage=new Stage();
 			dialogStage.setTitle("Nova venda");

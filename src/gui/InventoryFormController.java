@@ -126,10 +126,9 @@ public class InventoryFormController implements Initializable
 				if(entity.getName().equals(product.getName())&&nameExists==false)
 				{
 					nameExists=true;
-					Alerts.showAlert("Nome repetido", "Já existe um produto com esse nome no estoque", "Digite o nome exato do produto", AlertType.ERROR);
+					Alerts.showAlert("Nome repetido", "Existem produtos no inventario com o mesmo nome", "Verifique o nome de cada produto para que não sejam confundidos", AlertType.ERROR);
 				}
 			}
-			if(nameExists!=true)
 			service.saveOrUpdate(entity);
 			notifyChangeListeners();
 			Utils.currentStage(event).close();
