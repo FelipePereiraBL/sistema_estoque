@@ -33,19 +33,21 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO inventory "
-					+ "(nameProduct, brand, quantity, color, code, factoryPrice, salePrice, CategoryProductId) "
+					+ "(nameProduct, brand, quantity, color, reference, spotCostPrice, forwardCostPrice, cashSalePrice, forwardSellingPrice, CategoryProductId) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getBrand());
 			st.setInt(3, obj.getQuantity());
 			st.setString(4, obj.getColor());
-			st.setString(5, obj.getCode());
-			st.setDouble(6, obj.getFactoryPrice());
-			st.setDouble(7, obj.getSalePrice());
-			st.setInt(8, obj.getCategory().getId());
+			st.setString(5, obj.getReference());
+			st.setDouble(6, obj.getSpotCostPrice());
+			st.setDouble(7, obj.getForwardCostPrice());
+			st.setDouble(8, obj.getCashSalePrice());
+			st.setDouble(9, obj.getForwardSellingPrice());
+			st.setInt(10, obj.getCategory().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -82,18 +84,20 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"UPDATE inventory "
-					+ "SET nameProduct = ?, brand = ?, quantity = ?, color = ?, code = ?, factoryPrice = ?, salePrice = ?, CategoryProductId = ? "
+					+ "SET nameProduct = ?, brand = ?, quantity = ?, color = ?, reference = ?, spotCostPrice = ?, forwardCostPrice = ?, cashSalePrice = ?, forwardSellingPrice = ?, CategoryProductId = ? "
 					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getBrand());
 			st.setInt(3, obj.getQuantity());
 			st.setString(4, obj.getColor());
-			st.setString(5, obj.getCode());
-			st.setDouble(6, obj.getFactoryPrice());
-			st.setDouble(7, obj.getSalePrice());
-			st.setInt(8, obj.getCategory().getId());
-			st.setInt(9, obj.getId());
+			st.setString(5, obj.getReference());
+			st.setDouble(6, obj.getSpotCostPrice());
+			st.setDouble(7, obj.getForwardCostPrice());
+			st.setDouble(8, obj.getCashSalePrice());
+			st.setDouble(9, obj.getForwardSellingPrice());
+			st.setInt(10, obj.getCategory().getId());
+			st.setInt(11, obj.getId());
 
 			
 			st.executeUpdate();
@@ -172,9 +176,11 @@ private Connection conn;
 		obj.setBrand(rs.getString("brand"));
 		obj.setQuantity(rs.getInt("quantity"));
 		obj.setColor(rs.getString("color"));
-		obj.setCode(rs.getString("code"));
-		obj.setFactoryPrice(rs.getDouble("factoryPrice")); 
-		obj.setSalePrice(rs.getDouble("salePrice")); 
+		obj.setReference(rs.getString("reference"));
+		obj.setSpotCostPrice(rs.getDouble("spotCostPrice")); 
+		obj.setForwardCostPrice(rs.getDouble("forwardCostPrice")); 
+		obj.setCashSalePrice(rs.getDouble("cashSalePrice")); 
+		obj.setForwardSellingPrice(rs.getDouble("forwardSellingPrice")); 
 		obj.setCategory(cat);
 		
 		return obj;

@@ -52,11 +52,15 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private TextField txtColor;
 	@FXML
-	private TextField txtCode;
+	private TextField txtReference;
 	@FXML
-	private TextField txtFactoryPrice;
+	private TextField txtSpotCostPrice;
 	@FXML
-	private TextField txtSalePrice;
+	private TextField txtForwardCostPrice;
+	@FXML
+	private TextField txtCashSalePrice;
+	@FXML
+	private TextField txtForwardSellingPrice;
 
 	@FXML
 	private ComboBox<CategoryProduct> comboBoxCategory;
@@ -72,9 +76,11 @@ public class InventoryFormController implements Initializable
 	@FXML
 	private Label labelErrorColor;
 	@FXML
-	private Label labelErrorCode;
+	private Label labelErrorReference;
 	@FXML
-	private Label labelErrorFactoryPrice;
+	private Label labelErrorSpotCostPrice;
+	@FXML
+	private Label labelErrorCashSalePrice;
 	
 	@FXML
 	private Button btSave;
@@ -150,11 +156,13 @@ public class InventoryFormController implements Initializable
 		}		
 		obj.setName(txtName.getText());
 		
+		
 		if(txtBrand.getText()==null||txtBrand.getText().trim().equals(""))
 		{
 			exception.addErrors("brand", "Esse campo não pode ficar vazio");
 		}
 		obj.setBrand(txtBrand.getText());
+		
 		
 		if(txtQuantity.getText()==null||txtQuantity.getText().trim().equals(""))
 		{
@@ -162,27 +170,43 @@ public class InventoryFormController implements Initializable
 		}
 		obj.setQuantity(Utils.tryParseToInt(txtQuantity.getText()));
 		
+		
 		if(txtColor.getText()==null||txtColor.getText().trim().equals(""))
 		{
 			exception.addErrors("color", "Esse campo não pode ficar vazio");
 		}
 		obj.setColor(txtColor.getText());
 		
-		if(txtCode.getText()==null||txtCode.getText().trim().equals(""))
+		
+		if(txtReference.getText()==null||txtReference.getText().trim().equals(""))
 		{
-			exception.addErrors("code", "Esse campo não pode ficar vazio");
+			exception.addErrors("reference", "Esse campo não pode ficar vazio");
 		}
-		obj.setCode(txtCode.getText());
+		obj.setReference(txtReference.getText());
 		
-		if(txtFactoryPrice.getText()==null||txtFactoryPrice.getText().trim().equals(""))
+		
+		if(txtSpotCostPrice.getText()==null||txtSpotCostPrice.getText().trim().equals(""))
 		{
-			exception.addErrors("factoryPrice", "Esse campo não pode ficar vazio");
+			exception.addErrors("spotCostPrice", "Esse campo não pode ficar vazio");
 		}
-		obj.setFactoryPrice(Utils.tryParseToDouble(txtFactoryPrice.getText()));
+		obj.setSpotCostPrice(Utils.tryParseToDouble(txtSpotCostPrice.getText()));
 		
-		obj.setSalePrice(Utils.tryParseToDouble( txtSalePrice.getText()));
 		
-		obj.setCategory(comboBoxCategory.getValue());
+		obj.setForwardCostPrice(Utils.tryParseToDouble( txtForwardCostPrice.getText()));
+		
+		
+		if(txtCashSalePrice.getText()==null||txtCashSalePrice.getText().trim().equals(""))
+		{
+			exception.addErrors("cashSalePrice", "Esse campo não pode ficar vazio");
+		}	
+		obj.setCashSalePrice(Utils.tryParseToDouble( txtCashSalePrice.getText()));
+		
+		
+		obj.setForwardSellingPrice(Utils.tryParseToDouble(txtForwardSellingPrice.getText()));
+		
+		
+		obj.setCategory(comboBoxCategory.getValue());		
+
 		
 		if (exception.getErrors().size() > 0) 
 		{
@@ -212,9 +236,11 @@ public class InventoryFormController implements Initializable
 		Constraints.setTextFieldMaxLength(txtBrand, 20);
 		Constraints.setTextFieldInteger(txtQuantity);
 		Constraints.setTextFieldMaxLength(txtColor, 20);
-		Constraints.setTextFieldMaxLength(txtCode, 20);
-		Constraints.setTextFieldDouble(txtFactoryPrice);
-		Constraints.setTextFieldDouble(txtSalePrice);
+		Constraints.setTextFieldMaxLength(txtReference, 20);
+		Constraints.setTextFieldDouble(txtSpotCostPrice);
+		Constraints.setTextFieldDouble(txtForwardCostPrice);
+		Constraints.setTextFieldDouble(txtCashSalePrice);
+		Constraints.setTextFieldDouble(txtForwardSellingPrice);
 		
 		initializeComboBoxCategory();
 	}
@@ -231,9 +257,12 @@ public class InventoryFormController implements Initializable
 		txtBrand.setText(entity.getBrand());
 		txtQuantity.setText(String.valueOf(entity.getQuantity()));
 		txtColor.setText(entity.getColor());
-		txtCode.setText((entity.getCode()));
-		txtFactoryPrice.setText(String.valueOf(entity.getFactoryPrice()));
-		txtSalePrice.setText(String.valueOf(entity.getSalePrice()));
+		txtReference.setText((entity.getReference()));
+		txtSpotCostPrice.setText(entity.getSpotCostPrice().toString());
+		txtForwardCostPrice.setText(entity.getForwardCostPrice().toString());
+		txtCashSalePrice.setText(entity.getCashSalePrice().toString());
+		txtForwardSellingPrice.setText(entity.getForwardSellingPrice().toString());
+		
 		
 		if(entity.getCategory()==null)
 		{
@@ -266,8 +295,9 @@ public class InventoryFormController implements Initializable
 		labelErrorBrand.setText(fields.contains("brand")?errors.get("brand"):"");	
 		labelErrorQuantity.setText(fields.contains("quantity")?errors.get("quantity"):"");
 		labelErrorColor.setText(fields.contains("color")?errors.get("color"):"");		
-		labelErrorCode.setText(fields.contains("code")?errors.get("code"):"");
-		labelErrorFactoryPrice.setText(fields.contains("factoryPrice")?errors.get("factoryPrice"):"");
+		labelErrorReference.setText(fields.contains("reference")?errors.get("reference"):"");
+		labelErrorSpotCostPrice.setText(fields.contains("spotCostPrice")?errors.get("spotCostPrice"):"");
+		labelErrorCashSalePrice.setText(fields.contains("cashSalePrice")?errors.get("cashSalePrice"):"");
 		
 	}
 	

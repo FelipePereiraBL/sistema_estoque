@@ -11,9 +11,11 @@ public class Product implements Serializable
 	private String brand;
 	private Integer quantity;
 	private String color;
-	private String code;
-	private double factoryPrice;
-	private double salePrice;
+	private String reference;
+	private double spotCostPrice;
+	private double forwardCostPrice;
+	private double cashSalePrice;
+	private double forwardSellingPrice;
 	
 	private CategoryProduct category;
 
@@ -22,19 +24,26 @@ public class Product implements Serializable
 		
 	}
 
-	public Product(Integer id, String name, String brand,Integer quantity, String color, String code, double factoryPrice,
-		double salePrice, CategoryProduct category) {
+	
+
+	public Product(Integer id, String name, String brand, Integer quantity, String color, String reference,
+			Double spotCostPrice, Double forwardCostPrice, Double cashSalePrice, Double forwardSellingPrice,
+			CategoryProduct category) 
+	{
 		super();
 		this.id = id;
 		this.name = name;
 		this.brand = brand;
-		this.quantity=quantity;
+		this.quantity = quantity;
 		this.color = color;
-		this.code = code;
-		this.factoryPrice = factoryPrice;
-		this.salePrice = salePrice;
+		this.reference = reference;
+		this.spotCostPrice = spotCostPrice;
+		this.forwardCostPrice = forwardCostPrice;
+		this.cashSalePrice = cashSalePrice;
+		this.forwardSellingPrice = forwardSellingPrice;
 		this.category = category;
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -68,28 +77,44 @@ public class Product implements Serializable
 		this.color = color;
 	}
 
-	public String getCode() {
-		return code;
+	public String getReference() {
+		return reference;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+	
+	public Double getSpotCostPrice() {
+		return spotCostPrice;
 	}
 
-	public double getFactoryPrice() {
-		return factoryPrice;
+	public void setSpotCostPrice(Double spotCostPrice) {
+		this.spotCostPrice = spotCostPrice;
 	}
 
-	public void setFactoryPrice(double factoryPrice) {
-		this.factoryPrice = factoryPrice;
+	public Double getForwardCostPrice() {
+		return forwardCostPrice;
 	}
 
-	public double getSalePrice() {
-		return salePrice;
+	public void setForwardCostPrice(Double forwardCostPrice) {
+		this.forwardCostPrice = forwardCostPrice;
 	}
 
-	public void setSalePrice(double salePrice) {
-		this.salePrice = salePrice;
+	public Double getCashSalePrice() {
+		return cashSalePrice;
+	}
+
+	public void setCashSalePrice(Double cashSalePrice) {
+		this.cashSalePrice = cashSalePrice;
+	}
+
+	public Double getForwardSellingPrice() {
+		return forwardSellingPrice;
+	}
+
+	public void setForwardSellingPrice(Double forwardSellingPrice) {
+		this.forwardSellingPrice = forwardSellingPrice;
 	}
 
 	public CategoryProduct getCategory() {

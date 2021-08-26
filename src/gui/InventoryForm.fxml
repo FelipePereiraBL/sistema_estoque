@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="309.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
+<AnchorPane prefHeight="318.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
    <children>
       <GridPane layoutX="12.0" layoutY="18.0" prefHeight="263.0" prefWidth="512.0">
         <columnConstraints>
@@ -30,6 +30,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
@@ -38,13 +40,32 @@
             <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
             <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txtBrand" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtQuantity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txtColor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtCode" prefHeight="25.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="txtSalePrice" prefHeight="25.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <TextField fx:id="txtReference" prefHeight="25.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="txtSpotCostPrice" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="txtForwardCostPrice" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <padding>
                   <Insets left="15.0" />
                </padding></TextField>
-            <ComboBox fx:id="comboBoxCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="txtCashSalePrice" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </TextField>
+            <TextField fx:id="txtForwardSellingPrice" prefHeight="25.0" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </TextField>
+            <ComboBox fx:id="comboBoxCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <Label text="Cor" GridPane.rowIndex="4" />
             <Label fx:id="labelErrorName" prefHeight="15.0" prefWidth="152.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
@@ -53,44 +74,49 @@
             </Label>
             <Label text="Marca" GridPane.rowIndex="2" />
             <Label text="Código" GridPane.rowIndex="5" />
-            <Label text="Preço de Fabrica" GridPane.rowIndex="6" />
-            <Label text="Preço de Venda" GridPane.rowIndex="7" />
-            <Label text="Categoria" GridPane.rowIndex="8" />
-            <Label fx:id="labelErrorMarca" prefHeight="17.0" prefWidth="156.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label text="Preço de custo(á vista)" GridPane.rowIndex="6" />
+            <Label text="Preço de custo(á prazo)" GridPane.rowIndex="7" />
+            <Label text="Categoria" GridPane.rowIndex="10" />
+            <Label fx:id="labelErrorBrand" prefHeight="17.0" prefWidth="156.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="labelErrorCor" prefHeight="17.0" prefWidth="155.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <Label fx:id="labelErrorColor" prefHeight="17.0" prefWidth="155.0" textFill="#e80a0a" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="labelErrorCode" prefHeight="17.0" prefWidth="155.0" textFill="#dd0f0f" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <Label fx:id="labelErrorReference" prefHeight="17.0" prefWidth="155.0" textFill="#dd0f0f" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <font>
                   <Font name="System Italic" size="10.0" />
                </font>
             </Label>
             <Label text="Quantidade" GridPane.rowIndex="3" />
-            <TextField fx:id="txtQuantity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="labelErrorQuantidade" prefHeight="17.0" prefWidth="153.0" textFill="#ee0b0b" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Label fx:id="labelErrorQuantity" prefHeight="17.0" prefWidth="153.0" textFill="#ee0b0b" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font name="System Italic" size="10.0" />
                </font>
             </Label>
             <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="txtFactoryPrice" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <padding>
-                  <Insets left="15.0" />
-               </padding>
-            </TextField>
             <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label text="R$" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label text="Preço de venda(á vista)" GridPane.rowIndex="8" />
+            <Label text="Preço de venda(á prazo)" GridPane.rowIndex="9" />
+            <Label fx:id="labelErrorSpotCostPrice" prefHeight="17.0" prefWidth="153.0" textFill="#ee0b0b" GridPane.columnIndex="2" GridPane.rowIndex="6">
+               <font>
+                  <Font name="System Italic" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelErrorCashSalePrice" prefHeight="17.0" prefWidth="153.0" textFill="#ee0b0b" GridPane.columnIndex="2" GridPane.rowIndex="8">
+               <font>
+                  <Font name="System Italic" size="10.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
-      <HBox fillHeight="false" layoutX="183.0" layoutY="261.0" prefHeight="47.0" prefWidth="156.0" spacing="9.0">
+      <HBox fillHeight="false" layoutX="183.0" layoutY="268.0" prefHeight="40.0" prefWidth="156.0" spacing="9.0">
          <children>
             <Button fx:id="btSave" mnemonicParsing="false" onAction="#onBtSaveAction" text="Save" />
             <Button fx:id="btCancel" mnemonicParsing="false" onAction="#onBtCancelAction" text="Cancel" />

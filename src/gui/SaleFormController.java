@@ -191,7 +191,7 @@ public class SaleFormController implements Initializable
 					{
 						colorFound=true;
 						
-						salePrice=product.getSalePrice();
+						salePrice=product.getCashSalePrice();
 						
 						productName=product.getName();
 						productQuantity=product.getQuantity();

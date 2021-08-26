@@ -52,11 +52,15 @@ public class InventoryListController implements Initializable,DataChangeListener
 	@FXML
 	private TableColumn<Product, String > tableColumColor;
 	@FXML
-	private TableColumn<Product, String > tableColumCode;
+	private TableColumn<Product, String > tableColumReference;
 	@FXML
-	private TableColumn<Product, Double > tableColumFactoryPrice;
+	private TableColumn<Product, Double > tableColumSpotCostPrice;
 	@FXML
-	private TableColumn<Product, Double > tableColumSalePrice;
+	private TableColumn<Product, Double > tableColumForwardCostPrice;
+	@FXML
+	private TableColumn<Product, Double > tableColumCashSalePrice;
+	@FXML
+	private TableColumn<Product, Double > tableColumForwardSellingPrice;
 	
 	@FXML
 	private TableColumn<Product, Product > tableColumnEDIT;
@@ -99,9 +103,11 @@ public class InventoryListController implements Initializable,DataChangeListener
 		tableColumBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
 		tableColumQiantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 		tableColumColor.setCellValueFactory(new PropertyValueFactory<>("color"));
-		tableColumCode.setCellValueFactory(new PropertyValueFactory<>("code"));
-		tableColumFactoryPrice.setCellValueFactory(new PropertyValueFactory<>("factoryPrice"));
-		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+		tableColumReference.setCellValueFactory(new PropertyValueFactory<>("reference"));
+		tableColumSpotCostPrice.setCellValueFactory(new PropertyValueFactory<>("spotCostPrice"));
+		tableColumForwardCostPrice.setCellValueFactory(new PropertyValueFactory<>("forwardCostPrice"));
+		tableColumCashSalePrice.setCellValueFactory(new PropertyValueFactory<>("cashSalePrice"));
+		tableColumForwardSellingPrice.setCellValueFactory(new PropertyValueFactory<>("forwardSellingPrice"));
 	}
 	
 	public void updateTableView()
@@ -136,7 +142,7 @@ public class InventoryListController implements Initializable,DataChangeListener
 			
 			Stage dialogStage=new Stage();
 			
-			dialogStage.setTitle("Insira ou editar produto");
+			dialogStage.setTitle("Inserir ou editar produto");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -189,7 +195,7 @@ public class InventoryListController implements Initializable,DataChangeListener
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<Product, Product>() 
 		{ 
-		 private final Button button = new Button("Remove"); 
+		 private final Button button = new Button("Remover"); 
 		 @Override
 		 protected void updateItem(Product obj, boolean empty) 
 		 { 
