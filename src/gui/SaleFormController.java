@@ -2,6 +2,7 @@ package gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,13 +12,19 @@ import gui.listeners.DataChangeListeners;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import model.entities.Product;
 import model.entities.Sale;
 import model.services.ProductService;
@@ -63,6 +70,11 @@ public class SaleFormController implements Initializable
 	private Label labelProduct;
 	@FXML
 	private Label labelSaleTotal;
+	
+	@FXML
+	private ComboBox<String> comboBoxTypeOfSale;
+	
+	private ObservableList<String> obsList;
 	
 	public void setSale(Sale entity)
 	{
@@ -166,6 +178,8 @@ public class SaleFormController implements Initializable
 	{
 		initializeNodes();
 		
+		btSave.disabledProperty();
+		
 	}
 	
 	public void CheckProductSale()
@@ -191,7 +205,14 @@ public class SaleFormController implements Initializable
 					{
 						colorFound=true;
 						
-						salePrice=product.getCashSalePrice();
+						if(comboBoxTypeOfSale.getValue().contains("Á Vista"))
+						{
+							salePrice=product.getCashSalePrice();
+						}
+						else
+						{
+							salePrice=product.getForwardSellingPrice();
+						}					
 						
 						productName=product.getName();
 						productQuantity=product.getQuantity();
@@ -254,5 +275,31 @@ public class SaleFormController implements Initializable
 		Constraints.setTextFieldMaxLength(txtProductColor, 20);
 		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
 		Constraints.setTextFieldMaxLength(txtCustomerPhone, 13);
+		
+		initializeComboBoxTypeOfSale();
+		
+	}
+	
+	private void initializeComboBoxTypeOfSale()
+	{
+		List<String>list=Arrays.asList("Á Vista", "A Prazo");
+		obsList=FXCollections.observableArrayList(list);
+		
+		comboBoxTypeOfSale.setItems(obsList);
+		
+		comboBoxTypeOfSale.getSelectionModel().selectFirst();
+		
+		Callback<ListView<String>, ListCell<String>> factory = lv -> new ListCell<String>() 
+		{
+			@Override
+			protected void updateItem(String item, boolean empty) 
+			{
+				super.updateItem(item, empty);
+				setText(empty ? "" : item.toString());
+			}
+		};
+		comboBoxTypeOfSale.setCellFactory(factory);
+		comboBoxTypeOfSale.setButtonCell(factory.call(null));
+		
 	}
 }
