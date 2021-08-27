@@ -128,7 +128,7 @@ public class SaleListController  implements Initializable,DataChangeListeners
 		tableColumCustomerPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
 		tableColumDeliveryAddres.setCellValueFactory(new PropertyValueFactory<>("deliveryAddress"));
 		
-		tableColumnProductSale.setCellValueFactory(new PropertyValueFactory<>("saleProductDescription"));
+		tableColumnProductSale.setCellValueFactory(new PropertyValueFactory<>("product"));
 		
 		tableColumSalePrice.setCellValueFactory(new PropertyValueFactory<>("saleValue"));
 

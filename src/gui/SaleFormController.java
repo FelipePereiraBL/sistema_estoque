@@ -155,9 +155,8 @@ public class SaleFormController implements Initializable
 		obj.setSaleDate(new Date());
 				
 		obj.setClientName(txtClientName.getText());
-		obj.setCustomerPhone(txtCustomerPhone.getText());
-		
-		obj.setSaleProductDescription(productSale.toString());
+		obj.setCustomerPhone(Utils.tryParseToInt(txtCustomerPhone.getText()));
+		obj.setProduct(productSale);
 		
 		obj.setDeliveryAddress(txtDeliveryAddress.getText());	
 		obj.setSaleValue(salePrice);
@@ -274,7 +273,8 @@ public class SaleFormController implements Initializable
 		Constraints.setTextFieldMaxLength(txtProductName, 30);
 		Constraints.setTextFieldMaxLength(txtProductColor, 20);
 		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
-		Constraints.setTextFieldMaxLength(txtCustomerPhone, 13);
+		Constraints.setTextFieldInteger(txtCustomerPhone);
+		Constraints.setTextFieldMaxLength(txtCustomerPhone, 11);
 		
 		initializeComboBoxTypeOfSale();
 		

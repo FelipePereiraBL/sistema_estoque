@@ -6,16 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
 import model.dao.SaleDao;
+import model.entities.Product;
 import model.entities.Sale;
+import model.services.ProductService;
 
 public class SaleDaoJDBC implements SaleDao
 {
-private Connection conn;
+
+	private Connection conn;
 	
 	public SaleDaoJDBC(Connection conn) 
 	{
@@ -30,17 +35,17 @@ private Connection conn;
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO sale "
-					+ "(saleDate, clientName, customerPhone, deliveryAddress, saleProductDescription, saleValue) "
+					+ "(saleDate, clientName, customerPhone, deliveryAddress, totalSale, productId) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setDate(1,new java.sql.Date( obj.getSaleDate().getTime()));
 			st.setString(2, obj.getClientName());
-			st.setString(3, obj.getCustomerPhone());
+			st.setInt(3, obj.getCustomerPhone());
 			st.setString(4, obj.getDeliveryAddress());
-			st.setString(5, obj.getSaleProductDescription());
-			st.setDouble(6, obj.getSaleValue());
+			st.setDouble(5, obj.getSaleValue());
+			st.setInt(6, obj.getProduct().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -68,7 +73,6 @@ private Connection conn;
 			DB.closeStatement(st);
 		}
 	}
-//
 
 
 	@Override
@@ -92,49 +96,41 @@ private Connection conn;
 			DB.closeStatement(st);
 		}
 	}
-
-
-	@Override
-	public void update(Sale obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteById(Sale id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Sale findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 
 	@Override
 	public List<Sale> findAll() 
 	{
+		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try
 		{
 			st = conn.prepareStatement(
-				"SELECT * FROM sale ORDER BY clientName");
+				"SELECT * FROM sale ORDER BY id");
 			rs = st.executeQuery();
 
 			List<Sale> list = new ArrayList<>();
+			Map<Integer,Product> map = new HashMap<>();
 
 			while (rs.next()) 
 			{
+				Product prod=map.get(rs.getInt("productId"));
+				if (prod == null) 
+				{
+					prod = instantiateProduct(rs);
+					map.put(rs.getInt("productId"), prod);
+				}
+				
 				Sale obj = new Sale();
 				obj.setId(rs.getInt("id"));
 				obj.setSaleDate(rs.getDate("saleDate"));
 				obj.setClientName(rs.getString("clientName"));
-				obj.setCustomerPhone(rs.getString("customerPhone"));
+				obj.setCustomerPhone(rs.getInt("customerPhone"));
 				obj.setDeliveryAddress(rs.getString("deliveryAddress"));
-				obj.setSaleProductDescription(rs.getString("saleProductDescription"));
-				obj.setSaleValue(rs.getDouble("saleValue"));
+				obj.setProduct(prod);
+				obj.setSaleValue(rs.getDouble("totalSale"));
 				list.add(obj);
 			}
 			return list;
@@ -150,4 +146,19 @@ private Connection conn;
 		}
 	}
 
+	private Product instantiateProduct(ResultSet rs) throws SQLException
+	{
+		List<Product>list=new ProductService().findAll();
+		Product prod=new Product();
+		for (Product product : list) 
+		{
+			if(product.getId()==rs.getInt("productId"))
+			{
+				prod=product;
+			}
+			
+		}
+		return prod;
+	}
+		
 }
