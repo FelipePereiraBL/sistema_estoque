@@ -2,6 +2,8 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -25,6 +27,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -70,8 +73,13 @@ public class InventoryListController implements Initializable,DataChangeListener
 	
 	@FXML
 	private Button btNewProduct;
+	@FXML
+	private Button btNewSearchProduct;
 	
-	private ObservableList<Product> obsList;
+	@FXML
+	private TextField txtSearchProduct;
+	
+	private ObservableList<Product> obsList,obsListResultSearch;
 
 	public void setServices(ProductService services)
 	{
@@ -83,6 +91,28 @@ public class InventoryListController implements Initializable,DataChangeListener
 		Stage parentStage=Utils.currentStage(event);
 		Product obj=new Product();
 		createDialogForm(obj,"/gui/InventoryForm.fxml",parentStage);
+	}
+	
+	public void onBtSearchProduct()
+	{
+		List<Product>resultSearch=new ArrayList<>();
+		for (Product product : obsList) 
+		{
+			String serachParameter= Normalizer.normalize(
+					product.getCategory().getName()+", "+ product.getName()+", "+product.getBrand()+", "+product.getColor()+", "+product.getReference()
+					,  Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+			
+			if(serachParameter.toUpperCase().contains(txtSearchProduct.getText().toString().toUpperCase()))
+			{
+				resultSearch.add(product);
+			}
+			
+			 obsListResultSearch=FXCollections.observableArrayList(resultSearch);
+			 tableViewProducts.setItems(obsListResultSearch);
+			 
+			 initEditButtons();
+			 initRemoveButtons();
+		}
 	}
 
 	@Override

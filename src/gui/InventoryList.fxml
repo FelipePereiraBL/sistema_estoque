@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -15,10 +17,16 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
+      <ToolBar prefHeight="40.0" prefWidth="388.0">
         <items>
           <Button fx:id="btNewProduct" mnemonicParsing="false" onAction="#onBtNewProduct" text="Adiciona produto" />
+            <Label prefHeight="17.0" prefWidth="321.0" />
+            <TextField fx:id="txtSearchProduct" prefHeight="25.0" prefWidth="208.0" />
+            <Button fx:id="btNewSearchProduct" mnemonicParsing="false" onAction="#onBtSearchProduct" text="Procurar" />
         </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </ToolBar>
       <TableView fx:id="tableViewProducts" prefHeight="277.0" prefWidth="1125.0">
         <columns>
