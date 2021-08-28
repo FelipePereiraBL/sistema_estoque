@@ -10,7 +10,7 @@ public class Sale implements Serializable
 	private Integer id;
 	private Date saleDate;
 	private String clientName;
-	private Integer customerPhone;
+	private int customerPhone;
 	private String deliveryAddress;
 	private Double saleValue;
 	

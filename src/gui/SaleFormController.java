@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -12,6 +13,7 @@ import gui.listeners.DataChangeListeners;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +25,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import model.entities.Product;
 import model.entities.Sale;
@@ -43,6 +49,34 @@ public class SaleFormController implements Initializable
 	private SaleService saleService;
 	
 	@FXML
+	private TableView<Product> tableViewProducts;
+	@FXML
+	private TableColumn<Product, Integer > tableColumId;
+	@FXML
+	private TableColumn<Product, String > tableColumName;
+	@FXML
+	private TableColumn<Product, Integer > tableColumCategory;
+	@FXML
+	private TableColumn<Product, Integer > tableColumQiantity;
+	@FXML
+	private TableColumn<Product, String > tableColumBrand;
+	@FXML
+	private TableColumn<Product, String > tableColumColor;
+	@FXML
+	private TableColumn<Product, String > tableColumReference;
+	@FXML
+	private TableColumn<Product, Double > tableColumSpotCostPrice;
+	@FXML
+	private TableColumn<Product, Double > tableColumForwardCostPrice;
+	@FXML
+	private TableColumn<Product, Double > tableColumCashSalePrice;
+	@FXML
+	private TableColumn<Product, Double > tableColumForwardSellingPrice;
+	
+	@FXML
+	private TableColumn<Product, Product > tableColumnSELL;
+	
+	@FXML
 	private TextField txtId;
 	@FXML
 	private TextField txtClientName;
@@ -50,31 +84,39 @@ public class SaleFormController implements Initializable
 	private TextField txtCustomerPhone;
 	@FXML
 	private TextField txtDeliveryAddress;
-	@FXML
-	private TextField txtProductName;
-	@FXML
-	private TextField txtProductColor;
-	@FXML
-	private TextField txtProductBrand;
 
+	@FXML
+	private TextField txtSearchProduct;
+	
 	@FXML
 	private Button btSave;
 	@FXML
 	private Button btCancel;
 	@FXML
-	private Button btProductSale;
+	private Button btnSearchProduct;
+	@FXML
+	private Button btnShowAll;
+	@FXML
+	private Button btnUpdateLabelTotalSale;
 	
 	private Double salePrice;
 	
 	@FXML
 	private Label labelProduct;
+	
 	@FXML
 	private Label labelSaleTotal;
-	
+		
 	@FXML
 	private ComboBox<String> comboBoxTypeOfSale;
 	
 	private ObservableList<String> obsList;
+	private ObservableList<Product> obsListResultSearch;
+	
+	public void setServices(ProductService services)
+	{
+		this.service = services;
+	}
 	
 	public void setSale(Sale entity)
 	{
@@ -109,21 +151,34 @@ public class SaleFormController implements Initializable
 		{
 			try 
 			{
-				if(productSale.getQuantity()>0)
+				if(txtClientName.getText().equals("")||txtDeliveryAddress.getText().equals(""))
 				{
-					entity=getFormData();
-					saleService.save(entity);
-					
-					productSale.setQuantity(productSale.getQuantity()-1);
-					service.saveOrUpdate(productSale);
-					notifyChangeListeners();
-					Utils.currentStage(event).close();
+					Alerts.showAlert("Alerta", "Campos nulos", "Preencher o nome do cliente e o endereço de entrega é obrigatorio !", AlertType.INFORMATION);
 				}
 				else
 				{
-					Alerts.showAlert("Alerta de estoque", "Esse produto está esgotado !", "O produto "+productSale.getName()+" da cor "+productSale.getColor()+" está esgotado !", AlertType.INFORMATION);
+					if(txtCustomerPhone.getText().equals(""))
+					{
+						txtCustomerPhone.setText("0");
+						
+					}
+					if(salePrice==null)
+					{
+						Alerts.showAlert("Alerta", "Valor da venda nulo", "Selecione se a venda é á vista ou a prazo e click em OK !", AlertType.INFORMATION);
+					}
+					else
+					{
+						entity=getFormData();
+						saleService.save(entity);
+						
+						productSale.setQuantity(productSale.getQuantity()-1);
+						service.saveOrUpdate(productSale);
+						notifyChangeListeners();
+						Utils.currentStage(event).close();	
+					}					
+					
 				}
-									
+											
 			}
 			catch (DbException e) 
 			{
@@ -132,10 +187,37 @@ public class SaleFormController implements Initializable
 		}
 		else 
 		{
-			Alerts.showAlert("Alerta", "Nenhum produto foi escolhido", "Click em ESCOLHER PRODUTO produto para continuar !", AlertType.INFORMATION);
+			Alerts.showAlert("Alerta", "Nenhum produto foi escolhido", "Procure pelo produto e click no botão SELECIONAR para continuar !", AlertType.INFORMATION);
 		}
 	}
+	
+	public void SearchProducts()
+	{
+		if(service==null)
+		{
+			throw new IllegalStateException("Services was null");
+		}
 		
+		List<Product>list=service.findAll();
+		List<Product>resultSearch=new ArrayList<Product>();
+		
+		for (Product product : list) 
+		{
+			String serachParameter= Normalizer.normalize(
+					product.getCategory().getName()+", "+ product.getName()+", "+product.getBrand()+", "+product.getColor()+", "+product.getReference()
+					,  Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+			
+			if(serachParameter.toUpperCase().contains(txtSearchProduct.getText().toString().toUpperCase()))
+			{
+				resultSearch.add(product);
+			}
+		
+			obsListResultSearch = FXCollections.observableArrayList(resultSearch);
+			tableViewProducts.setItems(obsListResultSearch);
+		 initSELLButton();
+		}
+	}
+	
 	private void notifyChangeListeners() 
 	{
 		for (DataChangeListeners listener : dataChangeListeners)
@@ -143,8 +225,7 @@ public class SaleFormController implements Initializable
 			listener.onChanged();		
 		}		
 	}
-		
-	
+			
  	private Sale getFormData() 
 	{
 		Sale obj=new Sale();
@@ -159,7 +240,7 @@ public class SaleFormController implements Initializable
 		obj.setProduct(productSale);
 		
 		obj.setDeliveryAddress(txtDeliveryAddress.getText());	
-		obj.setSaleValue(salePrice);
+		obj.setSaleValue(Utils.tryParseToDouble(salePrice.toString()));
 
 		return obj;
 	}	
@@ -167,9 +248,7 @@ public class SaleFormController implements Initializable
 	@FXML
 	public  void onBtCancelAction(ActionEvent event)
 	{
-		Utils.currentStage(event).close();
-		
-		
+		Utils.currentStage(event).close();		
 	}
 	
 	@Override
@@ -177,105 +256,30 @@ public class SaleFormController implements Initializable
 	{
 		initializeNodes();
 		
-		btSave.disabledProperty();
+		 tableViewProducts.prefHeightProperty().add(200);
+         setServices(new ProductService());
 		
-	}
-	
-	public void CheckProductSale()
-	{
-		List<Product>products=service.findAll();
-		
-		boolean productFound=false,brandFound=false,colorFound=false;
-		
-		int productQuantity=0;
-		String productName = null,productColor=null,productBrand=null;
-		
-		for (Product product : products)
-		{
-			if(txtProductName.getText().toString().equals(product.getName().toString()) && productFound==false)
-			{
-				productFound=true;
-				
-				if(txtProductBrand.getText().toString().equals(product.getBrand().toString()) && brandFound==false)
-				{
-					brandFound=true;
-					
-					if(txtProductColor.getText().toString().equals(product.getColor().toString())&&colorFound==false)
-					{
-						colorFound=true;
-						
-						if(comboBoxTypeOfSale.getValue().contains("Á Vista"))
-						{
-							salePrice=product.getCashSalePrice();
-						}
-						else
-						{
-							salePrice=product.getForwardSellingPrice();
-						}					
-						
-						productName=product.getName();
-						productQuantity=product.getQuantity();
-						productColor=product.getColor();
-						productBrand=product.getBrand();
-						
-						if( txtClientName.getText().trim().equals("") || txtDeliveryAddress.getText().trim().equals(""))
-						{
-							Alerts.showAlert("Campos nulos", "", "Verifique se todos os campos foram preenchidos e click em Adicionar produto para continuar !", AlertType.INFORMATION);
-						}
-						else
-						{
-							productSale=product;
-							
-							if(productQuantity>0)
-							labelProduct.setText(product.toString());
-							labelSaleTotal.setText("R$"+salePrice.toString());
-						}
-						
-					
-					}					
-				}							
-			}						
-		}
-		if(productFound==true && colorFound==true&&brandFound==true&&productQuantity==0)
-		{
-			Alerts.showAlert("Alerta de estoque", "Esse produto está esgotado !", "O produto "+productName+" da marca "+productBrand+" da cor "+productColor+" está esgotado !", AlertType.INFORMATION);
-		}
-		
-		if(productQuantity<=3 && productQuantity>0&& productFound==true)
-		{
-			Alerts.showAlert("Alerta de estoque", "Esse produto está acabando !", "Após essa venda, terá apenas "+(productQuantity-1)+" "+productName+" da marca "+productBrand+" da cor "+productColor+" no estoque", AlertType.INFORMATION);
-		}
-		
-		if(productFound==false)
-		{
-			Alerts.showAlert("Produto não encontrado", "Esse produto não está no estoque ou o nome do produto está incorreto ou nulo!", null, AlertType.INFORMATION);
-			txtClientName.setText("");
-		}
-		
-		if(productFound==true&&brandFound==false)
-		{
-			Alerts.showAlert("Marca não encontrada", "Essa marca não está no estoque ou o campo da marca está incorreto ou nulo!", null, AlertType.INFORMATION);
-			txtProductBrand.setText("");
-		}
-		
-		if(productFound==true&&brandFound==true&&colorFound==false)
-		{
-			Alerts.showAlert("Cor não encontrada", "Essa cor não está no estoque ou o campo da cor está incorreto ou nulo", null, AlertType.INFORMATION);
-			txtProductColor.setText("");
-		}
 	}
 	
 	private void initializeNodes()
 	{
 		Constraints.setTextFieldInteger(txtId);
-		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
 		Constraints.setTextFieldMaxLength(txtClientName, 40);
-		Constraints.setTextFieldMaxLength(txtProductName, 30);
-		Constraints.setTextFieldMaxLength(txtProductColor, 20);
-		Constraints.setTextFieldMaxLength(txtProductBrand, 50);
 		Constraints.setTextFieldInteger(txtCustomerPhone);
 		Constraints.setTextFieldMaxLength(txtCustomerPhone, 11);
 		
+		tableColumId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableColumName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tableColumCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+		tableColumBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+		tableColumQiantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+		tableColumColor.setCellValueFactory(new PropertyValueFactory<>("color"));
+		tableColumReference.setCellValueFactory(new PropertyValueFactory<>("reference"));
+		tableColumSpotCostPrice.setCellValueFactory(new PropertyValueFactory<>("spotCostPrice"));
+		tableColumForwardCostPrice.setCellValueFactory(new PropertyValueFactory<>("forwardCostPrice"));
+		tableColumCashSalePrice.setCellValueFactory(new PropertyValueFactory<>("cashSalePrice"));
+		tableColumForwardSellingPrice.setCellValueFactory(new PropertyValueFactory<>("forwardSellingPrice"));
+	
 		initializeComboBoxTypeOfSale();
 		
 	}
@@ -302,4 +306,70 @@ public class SaleFormController implements Initializable
 		comboBoxTypeOfSale.setButtonCell(factory.call(null));
 		
 	}
+	
+	public void Sell(Product product)
+	{	
+		if(product.getQuantity()<=3 && product.getQuantity()>0)
+		{
+			Alerts.showAlert("Alerta de estoque", "Esse produto está acabando !", "Após essa venda, terá apenas "+(product.getQuantity()-1)+" "+product.getName()+" da marca "+product.getBrand()+" da cor "+product.getColor()+" no estoque", AlertType.INFORMATION);
+		}
+
+		tableViewProducts.setItems(null);
+		
+		if(product.getQuantity()==0)
+		{
+			Alerts.showAlert("Alerta de estoque", "Esse produto está esgotado !", "O produto "+product.getName()+"da marca "+product.getBrand()+" da cor "+product.getColor()+" está esgotado !", AlertType.INFORMATION);
+		}
+		else
+		{
+			productSale=product;
+			labelProduct.setText(productSale.toString());
+		}
+		
+	}
+	
+	public void ShowAll()
+	{
+		txtSearchProduct.setText("");
+		SearchProducts();
+	}
+	public void UpdateLabelTotalSale()
+	{
+		if(comboBoxTypeOfSale.getValue().contains("Á Vista"))
+		{
+			salePrice=productSale.getCashSalePrice();
+		}
+		else
+		{
+			salePrice=productSale.getForwardSellingPrice();
+		}	
+		labelSaleTotal.setText(salePrice.toString());
+	}
+	
+	private void initSELLButton()
+	{ 
+		tableColumnSELL.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
+		tableColumnSELL.setCellFactory(param -> new TableCell<Product, Product>()
+		
+		{ 
+		 private final Button button = new Button("Vender"); 
+		 
+		 @Override
+		 protected void updateItem(Product obj, boolean empty) 
+		 { 
+		   super.updateItem(obj, empty); 
+		 
+		   if (obj == null) 
+		   { 
+		     setGraphic(null); 
+		     return; 
+		   } 
+		   setGraphic(button); 
+		 
+		   button.setOnAction(event -> Sell(obj));
+
+		  } 
+		  }); 
+		}
+
 }

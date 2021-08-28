@@ -160,7 +160,7 @@ public class Product implements Serializable
 
 	@Override
 	public String toString() {
-		return name+"/"+brand+"/"+color;
+		return name+" "+brand+" "+color+"-Referencia:"+reference;
 	}
 
 	
