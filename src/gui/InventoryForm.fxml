@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="318.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
+<AnchorPane prefHeight="318.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InventoryFormController">
    <children>
       <GridPane layoutX="12.0" layoutY="18.0" prefHeight="263.0" prefWidth="512.0">
         <columnConstraints>

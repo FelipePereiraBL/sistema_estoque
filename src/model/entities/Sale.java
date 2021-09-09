@@ -10,18 +10,16 @@ public class Sale implements Serializable
 	private Integer id;
 	private Date saleDate;
 	private String clientName;
-	private int customerPhone;
+	private String customerPhone;
 	private String deliveryAddress;
+	private String typeOfSale;
 	private Double saleValue;
-	
-	private Product product;
-	
 	
 	public  Sale ()
 	{
 		
 	}
-	public Sale(Integer id, Date saleDate, String clientName, Integer customerPhone, String deliveryAddress, Double saleValue, Product product) 
+	public Sale(Integer id, Date saleDate, String clientName, String customerPhone, String deliveryAddress, String typeOfSale,Double saleValue) 
 	{
 		super();
 		this.id = id;
@@ -29,8 +27,8 @@ public class Sale implements Serializable
 		this.clientName = clientName;
 		this.customerPhone = customerPhone;
 		this.deliveryAddress = deliveryAddress;
+		this.typeOfSale=typeOfSale;
 		this.saleValue = saleValue;
-		this.product = product;
 	}
 	
 	public Integer getId() 
@@ -60,11 +58,11 @@ public class Sale implements Serializable
 		this.clientName = clientName;
 	}
 	
-	public Integer getCustomerPhone()
+	public String getCustomerPhone()
 	{
 		return customerPhone;
 	}
-	public void setCustomerPhone(Integer customerPhone)
+	public void setCustomerPhone(String customerPhone)
 	{
 		this.customerPhone = customerPhone;
 	}
@@ -78,6 +76,15 @@ public class Sale implements Serializable
 		this.deliveryAddress = deliveryAddress;
 	}
 	
+	public String getTypeOfSale()
+	{
+		return typeOfSale;
+	}
+	public void setTypeOfSale(String typeOfSale) 
+	{
+		this.typeOfSale = typeOfSale;
+	}
+	
 	public Double getSaleValue()
 	{
 		return saleValue;
@@ -87,14 +94,6 @@ public class Sale implements Serializable
 		this.saleValue = saleValue;
 	}
 	
-	public Product getProduct() 
-	{
-		return product;
-	}
-	public void setProduct(Product product) 
-	{
-		this.product = product;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,5 +117,11 @@ public class Sale implements Serializable
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "Sale [id=" + id + ", saleDate=" + saleDate + ", clientName=" + clientName + ", customerPhone="
+				+ customerPhone + ", deliveryAddress=" + deliveryAddress + ", saleValue=" + saleValue + "]";
+	}
+	
 
 }

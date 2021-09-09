@@ -6,16 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import db.DB;
 import db.DbException;
 import model.dao.SaleDao;
-import model.entities.Product;
 import model.entities.Sale;
-import model.services.ProductService;
 
 public class SaleDaoJDBC implements SaleDao
 {
@@ -35,17 +31,17 @@ public class SaleDaoJDBC implements SaleDao
 		{
 			st = conn.prepareStatement(
 					"INSERT INTO sale "
-					+ "(saleDate, clientName, customerPhone, deliveryAddress, totalSale, productId) "
+					+ "(saleDate, clientName, customerPhone, deliveryAddress, typeOfSale, totalSale) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setDate(1,new java.sql.Date( obj.getSaleDate().getTime()));
 			st.setString(2, obj.getClientName());
-			st.setInt(3, obj.getCustomerPhone());
+			st.setString(3, obj.getCustomerPhone());
 			st.setString(4, obj.getDeliveryAddress());
-			st.setDouble(5, obj.getSaleValue());
-			st.setInt(6, obj.getProduct().getId());
+			st.setString(5, obj.getTypeOfSale());
+			st.setDouble(6, obj.getSaleValue());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -112,24 +108,16 @@ public class SaleDaoJDBC implements SaleDao
 			rs = st.executeQuery();
 
 			List<Sale> list = new ArrayList<>();
-			Map<Integer,Product> map = new HashMap<>();
 
 			while (rs.next()) 
-			{
-				Product prod=map.get(rs.getInt("productId"));
-				if (prod == null) 
-				{
-					prod = instantiateProduct(rs);
-					map.put(rs.getInt("productId"), prod);
-				}
-				
+			{				
 				Sale obj = new Sale();
 				obj.setId(rs.getInt("id"));
 				obj.setSaleDate(rs.getDate("saleDate"));
 				obj.setClientName(rs.getString("clientName"));
-				obj.setCustomerPhone(rs.getInt("customerPhone"));
+				obj.setCustomerPhone(rs.getString("customerPhone"));
 				obj.setDeliveryAddress(rs.getString("deliveryAddress"));
-				obj.setProduct(prod);
+				obj.setTypeOfSale(rs.getString("typeOfSale"));
 				obj.setSaleValue(rs.getDouble("totalSale"));
 				list.add(obj);
 			}
@@ -145,20 +133,4 @@ public class SaleDaoJDBC implements SaleDao
 			DB.closeResultSet(rs);
 		}
 	}
-
-	private Product instantiateProduct(ResultSet rs) throws SQLException
-	{
-		List<Product>list=new ProductService().findAll();
-		Product prod=new Product();
-		for (Product product : list) 
-		{
-			if(product.getId()==rs.getInt("productId"))
-			{
-				prod=product;
-			}
-			
-		}
-		return prod;
-	}
-		
 }

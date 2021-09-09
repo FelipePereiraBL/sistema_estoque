@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="371.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CategoryProductListController">
+<VBox prefHeight="371.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CategoryProductListController">
    <children>
       <Label prefHeight="44.0" prefWidth="209.0" text="Categorias de Produtos">
          <font>
