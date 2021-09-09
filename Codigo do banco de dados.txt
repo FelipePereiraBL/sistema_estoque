@@ -1,0 +1,44 @@
+create database sistemaestoque;
+use sistemaestoque;
+create table category(
+id int not null auto_increment,
+name varchar(30),
+primary key (id));
+
+create table inventory(
+id int not null auto_increment,
+nameProduct varchar(30),
+brand varchar(30),
+quantity int,
+color varchar(30),
+reference varchar(20),
+spotCostPrice double,
+forwardCostPrice double,
+cashSalePrice double,
+forwardSellingPrice double,
+primary key (id),
+foreign key(CategoryProductId) references category(id));
+
+create table sale(
+id int not null auto_increment,
+saleData date,
+clientName varchar(50),
+deliveryAddress varchar(50),
+customerPhone varchar(14),
+typeOfSale varchar (10),
+totalSale double);
+
+create table itensale(
+id int not null auto_increment,
+productId int,
+saleId int,
+price double,
+quantity int,
+subTotal double);
+
+
+
+
+
+
+

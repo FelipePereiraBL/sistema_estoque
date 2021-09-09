@@ -73,7 +73,7 @@
                </font>
             </Label>
             <Label text="Marca" GridPane.rowIndex="2" />
-            <Label text="Código" GridPane.rowIndex="5" />
+            <Label text="Referencia" GridPane.rowIndex="5" />
             <Label text="Preço de custo(á vista)" GridPane.rowIndex="6" />
             <Label text="Preço de custo(á prazo)" GridPane.rowIndex="7" />
             <Label text="Categoria" GridPane.rowIndex="10" />
